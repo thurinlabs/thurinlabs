@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thurin - Private Identity Verification with ZK Proofs</title>
+  <meta name="description" content="Prove you're human without revealing who you are. Privacy-preserving identity verification using zero-knowledge proofs and your mobile driver's license.">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thurin.id">
+  <meta property="og:title" content="Thurin - Private Identity Verification with ZK Proofs">
+  <meta property="og:description" content="Prove you're human without revealing who you are. Privacy-preserving identity verification using zero-knowledge proofs and your mobile driver's license.">
+  <meta property="og:image" content="https://thurin.id/images/og-image.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@thurinlabs">
+  <meta name="twitter:title" content="Thurin - Private Identity Verification with ZK Proofs">
+  <meta name="twitter:description" content="Prove you're human without revealing who you are. Privacy-preserving identity verification using zero-knowledge proofs and your mobile driver's license.">
+  <meta name="twitter:image" content="https://thurin.id/images/og-image.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #1a1a12;
+      --bg-secondary: #252518;
+      --text: #faf9f5;
+      --text-secondary: #a8a598;
+      --accent: #7c9a3e;
+      --accent-hover: #5c7a2e;
+      --gold: #c9a227;
+      --orange: #d4763a;
+      --border: #3a3a2a;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-text {
+      margin-right: -0.4em;
+    }
+
+    .logo-accent {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      display: flex;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      line-height: 1.1;
+      background: linear-gradient(135deg, var(--text) 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero .tagline {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 16px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--gold);
+      border-radius: 100px;
+      font-size: 0.875rem;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    /* Features */
+    .features {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .features h2 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .feature {
+      padding: 24px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .feature:hover {
+      border-color: var(--accent);
+    }
+
+    .feature h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      color: var(--gold);
+    }
+
+    .feature p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* How it works */
+    .how-it-works {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .how-it-works h2 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: var(--bg);
+      border-radius: 50%;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .step-content h3 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .step-content p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* CTA */
+    .cta {
+      padding: 80px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .cta h2 {
+      font-size: 1.75rem;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .button-secondary {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .button-secondary:hover {
+      border-color: var(--text-secondary);
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .copyright {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .hero {
+        padding: 60px 0;
+      }
+
+      .features, .how-it-works, .cta {
+        padding: 48px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <div class="logo">
+        <svg viewBox="0 0 100 100" width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <span class="logo-text">Thurin</span><span class="logo-accent">.id</span>
+      </div>
+      <nav class="nav-links">
+        <a href="https://github.com/thurinlabs" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="https://x.com/thurinlabs" target="_blank" rel="noopener noreferrer" aria-label="X">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <span class="badge">Coming Soon</span>
+        <h1>Verify your identity<br>Keep your privacy</h1>
+        <p class="tagline">Zero-knowledge proofs for digital identity<br>Privacy-preserving verification for the new web</p>
+        <a href="#" class="button button-primary demo-link" style="display: inline-block; width: auto; margin-top: 24px;">Try Demo</a>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <h2>What you can prove</h2>
+        <div class="feature-grid">
+          <div class="feature">
+            <h3>Age Verification</h3>
+            <p>Alcohol, cannabis, and<br>age-restricted purchases</p>
+          </div>
+          <div class="feature">
+            <h3>Proof of Personhood</h3>
+            <p>Sybil resistance for airdrops, voting, and more</p>
+          </div>
+          <div class="feature">
+            <h3>US Residency</h3>
+            <p>Token sale and jurisdiction compliance</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-it-works">
+      <div class="container">
+        <h2>How it works</h2>
+        <div class="steps">
+          <div class="step">
+            <span class="step-number">1</span>
+            <div class="step-content">
+              <h3>Connect your web3 wallet</h3>
+              <p>Your proof will be bound to your wallet address</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-number">2</span>
+            <div class="step-content">
+              <h3>Share from your phone</h3>
+              <p>Securely share identity data from your phone</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-number">3</span>
+            <div class="step-content">
+              <h3>Generate a ZK proof</h3>
+              <p>Prove claims about your ID without revealing personal information</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-number">4</span>
+            <div class="step-content">
+              <h3>Verify on-chain</h3>
+              <p>Your proof is verified by a smart contract, permanently</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Built for developers</h2>
+        <p>Open source SDK. Permissionless contracts. Integrate in minutes.</p>
+        <div class="button-group">
+          <a href="#" class="button button-primary demo-link">
+            Try Demo
+          </a>
+          <a href="https://github.com/thurinlabs" class="button button-secondary" target="_blank" rel="noopener noreferrer">
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://thurinlabs.eth.limo" class="ens-link" target="_blank" rel="noopener noreferrer">thurinlabs.eth</a>
+        <a href="https://github.com/thurinlabs" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://x.com/thurinlabs" target="_blank" rel="noopener noreferrer">X</a>
+        <a href="privacy/" class="privacy-link">Privacy</a>
+      </div>
+      <p class="copyright">&copy; 2026 Thurin Labs. Open source under Apache-2.0.</p>
+    </div>
+  </footer>
+  <script>
+    // Set links based on current domain
+    const host = window.location.host;
+    let demoUrl = 'https://app.thurin.id';
+    let ensUrl = 'https://thurinlabs.eth.limo';
+    let privacyUrl = 'https://thurin.id/privacy/';
+
+    if (host.endsWith('thurinlabs.eth.limo')) {
+      demoUrl = 'https://app.thurinlabs.eth.limo';
+      ensUrl = 'https://thurinlabs.eth.limo';
+      privacyUrl = 'privacy/';
+    } else if (host.endsWith('thurinlabs.eth')) {
+      demoUrl = 'https://app.thurinlabs.eth';
+      ensUrl = 'https://thurinlabs.eth';
+      privacyUrl = 'privacy/';
+    } else if (host.includes('thurin.id')) {
+      demoUrl = 'https://app.thurin.id';
+      ensUrl = 'https://thurinlabs.eth.limo';
+      privacyUrl = 'privacy/';
+    }
+
+    document.querySelectorAll('.demo-link').forEach(link => link.href = demoUrl);
+    document.querySelectorAll('.ens-link').forEach(link => link.href = ensUrl);
+    document.querySelectorAll('.privacy-link').forEach(link => link.href = privacyUrl);
+  </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "@thurinlabs/landing",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Landing page for thurin.id",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build needed'",
+    "deploy:ipfs": "echo 'Use: ipfs add -r . or pin to Pinata'"
+  }
+}

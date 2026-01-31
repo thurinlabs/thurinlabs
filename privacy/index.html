@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Thurin</title>
+  <meta name="description" content="Thurin Privacy Policy - How we protect your data with zero-knowledge proofs.">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #1a1a12;
+      --bg-secondary: #252518;
+      --text: #faf9f5;
+      --text-secondary: #a8a598;
+      --accent: #7c9a3e;
+      --accent-hover: #5c7a2e;
+      --gold: #c9a227;
+      --orange: #d4763a;
+      --border: #3a3a2a;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo-text {
+      margin-right: -0.4em;
+    }
+
+    .logo-accent {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    /* Content */
+    .content {
+      padding: 60px 0;
+    }
+
+    .content h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .effective-date {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 48px;
+    }
+
+    .content h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 48px;
+      margin-bottom: 16px;
+      color: var(--gold);
+    }
+
+    .content h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 12px;
+    }
+
+    .content p {
+      margin-bottom: 16px;
+      color: var(--text-secondary);
+    }
+
+    .content ul {
+      margin-bottom: 16px;
+      padding-left: 24px;
+      color: var(--text-secondary);
+    }
+
+    .content li {
+      margin-bottom: 8px;
+    }
+
+    .content strong {
+      color: var(--text);
+    }
+
+    .content a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .content a:hover {
+      text-decoration: underline;
+    }
+
+    /* Table */
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+    }
+
+    .content th,
+    .content td {
+      padding: 12px 16px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    .content th {
+      background: var(--bg-secondary);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .content td {
+      color: var(--text-secondary);
+    }
+
+    /* Highlight box */
+    .highlight-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* Ordered list for steps */
+    .content ol {
+      margin-bottom: 16px;
+      padding-left: 24px;
+      color: var(--text-secondary);
+    }
+
+    .content ol li {
+      margin-bottom: 8px;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .copyright {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 600px) {
+      .content {
+        padding: 40px 0;
+      }
+
+      .content h1 {
+        font-size: 2rem;
+      }
+
+      .content table {
+        font-size: 0.875rem;
+      }
+
+      .content th,
+      .content td {
+        padding: 8px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">
+        <svg viewBox="0 0 100 100" width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <span class="logo-text">Thurin</span><span class="logo-accent">.id</span>
+      </a>
+      <nav class="nav-links">
+        <a href="https://github.com/thurinlabs" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://x.com/thurinlabs" target="_blank" rel="noopener noreferrer">X</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="container">
+      <h1>Privacy Policy</h1>
+      <p class="effective-date"><strong>Effective Date:</strong> January 2026 &nbsp;|&nbsp; <strong>Last Updated:</strong> January 21, 2026</p>
+
+      <h2>Overview</h2>
+      <p>Thurin Labs LLC ("Thurin," "we," "our," or "us") provides privacy-preserving identity verification using zero-knowledge cryptography. This policy explains what data we collect, how we use it, and your rights.</p>
+
+      <div class="highlight-box">
+        <p>Thurin is designed to verify identity claims (such as age or uniqueness) <strong>without collecting personal information</strong>. Your identity data never leaves your device.</p>
+      </div>
+
+      <h2>What We Collect</h2>
+
+      <h3>Data We Store</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Purpose</th>
+            <th>Retention</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ethereum address</td>
+            <td>On-chain verification record</td>
+            <td>Permanent (public blockchain)</td>
+          </tr>
+          <tr>
+            <td>Cryptographic nullifier</td>
+            <td>Sybil resistance (prevents duplicate claims)</td>
+            <td>Permanent (public blockchain)</td>
+          </tr>
+          <tr>
+            <td>Proof timestamp</td>
+            <td>Verification timing</td>
+            <td>Permanent (public blockchain)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Data We Do NOT Collect</h3>
+      <ul>
+        <li>Name, address, date of birth</li>
+        <li>Driver's license or ID numbers</li>
+        <li>Photos, biometrics, or facial data</li>
+        <li>Social Security numbers</li>
+        <li>Any raw data from your mobile driver's license</li>
+      </ul>
+
+      <h2>How Verification Works</h2>
+      <ol>
+        <li>You present your mobile driver's license from Apple or Google Wallet</li>
+        <li>Your device generates a zero-knowledge proof locally</li>
+        <li>The proof cryptographically confirms claims (e.g., "valid license" or "over 21") without revealing underlying data</li>
+        <li>Only the proof result is transmitted—your personal data stays on your device</li>
+      </ol>
+
+      <h2>Third Parties</h2>
+      <p>We do not share data with third parties for marketing or advertising purposes.</p>
+      <p><strong>Service providers:</strong></p>
+      <ul>
+        <li>Blockchain networks (Ethereum, Base, etc.) store verification records on-chain</li>
+        <li>No third-party analytics or tracking services</li>
+      </ul>
+
+      <h2>Cookies and Tracking</h2>
+      <p>Our website does not use cookies or tracking technologies.</p>
+
+      <h2>Your Rights</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Know what data we have about you (limited to on-chain records)</li>
+        <li>Request information about our data practices</li>
+        <li>Contact us with privacy concerns</li>
+      </ul>
+
+      <h2>Data Security</h2>
+      <ul>
+        <li>All verification happens client-side using cryptographic proofs</li>
+        <li>No personal data is transmitted to or stored on our servers</li>
+        <li>On-chain data is public but contains no personally identifiable information</li>
+      </ul>
+
+      <h2>Children's Privacy</h2>
+      <p>Thurin requires a valid mobile driver's license. Users must meet the age requirements of their state's licensing authority.</p>
+
+      <h2>Changes to This Policy</h2>
+      <p>We may update this policy periodically. Changes will be posted on this page with an updated effective date.</p>
+
+      <h2>Contact Us</h2>
+      <p>For privacy questions or concerns:</p>
+      <ul>
+        <li>Email: <a href="mailto:privacy@thurin.id">privacy@thurin.id</a></li>
+        <li>Website: <a href="https://thurin.id">https://thurin.id</a></li>
+      </ul>
+
+      <h2>Legal Basis (GDPR)</h2>
+      <p>For users in the European Economic Area, our legal basis for processing is:</p>
+      <ul>
+        <li>Legitimate interest in providing privacy-preserving identity verification</li>
+        <li>No personal data is processed—zero-knowledge proofs ensure data minimization by design</li>
+      </ul>
+
+      <hr>
+
+      <p><em>Thurin is committed to building identity verification that respects user privacy. By using zero-knowledge cryptography, we prove what matters without exposing what doesn't.</em></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://thurinlabs.eth.limo" target="_blank" rel="noopener noreferrer">thurinlabs.eth</a>
+        <a href="https://github.com/thurinlabs" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://x.com/thurinlabs" target="_blank" rel="noopener noreferrer">X</a>
+        <a href=".">Privacy</a>
+      </div>
+      <p class="copyright">&copy; 2026 Thurin Labs. Open source under Apache-2.0.</p>
+    </div>
+  </footer>
+</body>
+</html>
