@@ -228,11 +228,15 @@
     }
 
     .hero p {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--color-text-muted);
-      max-width: 520px;
+      max-width: 600px;
       margin: 0 auto;
-      line-height: 1.7;
+      line-height: 1.8;
+    }
+
+    .hero p + p {
+      margin-top: 1rem;
     }
 
     /* ── App Cards ── */
@@ -308,6 +312,140 @@
     .app-card-link:hover {
       color: var(--color-primary-light);
       gap: 0.55rem;
+    }
+
+    /* ── App Detail Sections ── */
+    .app-detail {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .app-detail {
+      border-top: 1px solid var(--color-border);
+    }
+
+    .app-detail.reverse .app-detail-info { order: 2; }
+    .app-detail.reverse .app-detail-steps { order: 1; }
+
+    .app-detail-info h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-heading);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .app-detail-info h3 a {
+      color: var(--color-heading);
+      transition: color 0.2s;
+    }
+
+    .app-detail-info h3 a:hover {
+      color: var(--color-primary);
+    }
+
+    .app-detail-info p {
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .app-detail-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .app-detail-features li {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+      padding-left: 1.2em;
+      position: relative;
+    }
+
+    .app-detail-features li::before {
+      content: '\203A';
+      position: absolute;
+      left: 0;
+      color: var(--color-secondary);
+    }
+
+    .app-detail-steps-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-top: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .app-detail-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .app-detail-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 1.6rem;
+      height: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-primary);
+      color: var(--color-btn-primary-text);
+      border-radius: 50%;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .step-text {
+      font-size: 0.9rem;
+      color: var(--color-text);
+      line-height: 1.5;
+      padding-top: 0.1rem;
+    }
+
+    .step-text strong {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .step-text span {
+      color: var(--color-text-muted);
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 768px) {
+      .app-detail {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2.5rem 1.25rem;
+      }
+
+      .app-detail.reverse .app-detail-info { order: 1; }
+      .app-detail.reverse .app-detail-steps { order: 2; }
     }
 
     /* ── Footer ── */
@@ -436,7 +574,8 @@
   <!-- Hero -->
   <section class="hero">
     <h1>Prove more. <br class="mobile-break">Reveal less.</h1>
-    <p>Cryptographic identity infrastructure for the new web.</p>
+    <p>Identity on the internet is broken. To prove who you are, you have to give up who you are. We think cryptography can fix that.</p>
+    <p>Thurin builds open, decentralized infrastructure for a world where identity is self-sovereign, privacy is the default, and trust is verified by math. No backends. No intermediaries. No data collection. Just cryptography, smart contracts, and you. Zero-knowledge proofs, on-chain attestations, and public-key cryptography are the foundation. We're building the tools to put them to work.</p>
   </section>
 
   <!-- App Cards -->
@@ -487,10 +626,133 @@
         </svg>
       </div>
       <h2>Scry</h2>
-      <p>Explore on-chain PGP attestations and verify proofs.</p>
+      <p>Explore and verify the Thurin identity graph.</p>
       <a href="https://scry.thurin.id" class="app-card-link app-link" target="_blank" rel="noopener noreferrer">Launch &rarr;</a>
     </div>
 
+  </section>
+
+  <!-- Sigil Detail -->
+  <section class="app-detail">
+    <div class="app-detail-info">
+      <h3>
+        <svg viewBox="20 20 60 65" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+          <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <a href="https://app.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Sigil</a>
+      </h3>
+      <p>Prove you're human without revealing who you are. Sigil uses zero-knowledge proofs and your mobile driver's license to verify identity claims while keeping your personal data private.</p>
+      <ul class="app-detail-features">
+        <li>Sybil-proof governance and fair airdrops</li>
+        <li>Human-only spaces without doxxing members</li>
+        <li>Jurisdiction and age checks, zero personal data shared</li>
+        <li>Proof bound to your wallet address</li>
+      </ul>
+    </div>
+    <div class="app-detail-steps">
+      <div class="app-detail-steps-label">How it works</div>
+      <div class="app-detail-step">
+        <span class="step-num">1</span>
+        <div class="step-text"><strong>Connect your wallet</strong><span>Your proof will be bound to your Ethereum address</span></div>
+      </div>
+      <div class="app-detail-step">
+        <span class="step-num">2</span>
+        <div class="step-text"><strong>Share from your phone</strong><span>Securely share identity data from your mobile ID</span></div>
+      </div>
+      <div class="app-detail-step">
+        <span class="step-num">3</span>
+        <div class="step-text"><strong>Generate a ZK proof</strong><span>Prove claims about your identity without revealing personal information</span></div>
+      </div>
+      <div class="app-detail-step">
+        <span class="step-num">4</span>
+        <div class="step-text"><strong>Verify on-chain</strong><span>Your proof is verified by a smart contract, permanently</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Signet Detail -->
+  <section class="app-detail reverse">
+    <div class="app-detail-info">
+      <h3>
+        <svg viewBox="20 20 76 76" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+          <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <rect x="63" y="72" width="22" height="18" rx="2" fill="none" stroke="#c9a227" stroke-width="3"/>
+          <path d="M68 72 V66 Q68 58 74 58 Q80 58 80 66 V72" fill="none" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <a href="https://signet.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Signet</a>
+      </h3>
+      <p>Create a permanent, verifiable link between your Ethereum address and your GPG key. Signet walks you through a four-step attestation flow that publishes your cryptographic identity on-chain.</p>
+      <ul class="app-detail-features">
+        <li>Many-to-many ETH address and GPG key mapping</li>
+        <li>Dual-signed attestation: wallet signature + GPG clearsign</li>
+        <li>On-chain registry with O(1) duplicate detection</li>
+        <li>Fully non-custodial, no intermediaries</li>
+      </ul>
+    </div>
+    <div class="app-detail-steps">
+      <div class="app-detail-steps-label">How it works</div>
+      <div class="app-detail-step">
+        <span class="step-num">1</span>
+        <div class="step-text"><strong>Connect your wallet</strong><span>Signet works on Ethereum mainnet</span></div>
+      </div>
+      <div class="app-detail-step">
+        <span class="step-num">2</span>
+        <div class="step-text"><strong>Sign your fingerprint</strong><span>Your wallet signs your GPG fingerprint to prove ownership</span></div>
+      </div>
+      <div class="app-detail-step">
+        <span class="step-num">3</span>
+        <div class="step-text"><strong>GPG clearsign</strong><span>Sign the attestation message with your GPG key</span></div>
+      </div>
+      <div class="app-detail-step">
+        <span class="step-num">4</span>
+        <div class="step-text"><strong>Publish on-chain</strong><span>Submit the dual-signed attestation to the PGPRegistry contract</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scry Detail -->
+  <section class="app-detail">
+    <div class="app-detail-info">
+      <h3>
+        <svg viewBox="20 20 76 76" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+          <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="72" cy="72" r="12" fill="none" stroke="#c9a227" stroke-width="3.5"/>
+          <line x1="81" y1="81" x2="92" y2="92" stroke="#c9a227" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+        <a href="https://scry.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Scry</a>
+      </h3>
+      <p>Explore and verify the Thurin identity graph. Look up any address or key, verify email ownership through OpenPGP, and validate on-chain attestations client-side.</p>
+      <ul class="app-detail-features">
+        <li>Search by ETH address, ENS name, or GPG fingerprint</li>
+        <li>Email ownership verification via OpenPGP</li>
+        <li>Client-side signature and attestation verification</li>
+        <li>Sigil verification status for addresses (coming soon)</li>
+      </ul>
+    </div>
+    <div class="app-detail-steps">
+      <div class="app-detail-steps-label">How it works</div>
+      <div class="app-detail-step">
+        <span class="step-num">1</span>
+        <div class="step-text"><strong>Look up an identity</strong><span>Search by ETH address, ENS name, or GPG fingerprint</span></div>
+      </div>
+      <div class="app-detail-step">
+        <span class="step-num">2</span>
+        <div class="step-text"><strong>See the full picture</strong><span>On-chain attestations, linked keys, and email ownership</span></div>
+      </div>
+      <div class="app-detail-step">
+        <span class="step-num">3</span>
+        <div class="step-text"><strong>Verify everything client-side</strong><span>Signatures, proofs, and attestations validated in your browser</span></div>
+      </div>
+    </div>
   </section>
 
   </main>
