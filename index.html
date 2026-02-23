@@ -1,480 +1,574 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="thurin">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thurin - Private Identity Verification with ZK Proofs</title>
-  <meta name="description" content="Prove you're human without revealing who you are. Privacy-preserving identity verification using zero-knowledge proofs and your mobile driver's license.">
+  <title>Thurin — Identity Infrastructure for the New Web</title>
+  <meta name="description" content="Thurin is identity infrastructure for the new web. Verify with zero-knowledge proofs, link ETH addresses to GPG keys on-chain, and explore PGP attestations.">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="canonical" href="https://thurin.id">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://thurin.id">
-  <meta property="og:title" content="Thurin - Private Identity Verification with ZK Proofs">
-  <meta property="og:description" content="Prove you're human without revealing who you are. Privacy-preserving identity verification using zero-knowledge proofs and your mobile driver's license.">
+  <meta property="og:title" content="Thurin — Identity Infrastructure for the New Web">
+  <meta property="og:description" content="Thurin is identity infrastructure for the new web. Verify with zero-knowledge proofs, link ETH addresses to GPG keys on-chain, and explore PGP attestations.">
   <meta property="og:image" content="https://thurin.id/images/og-image.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@thurinlabs">
-  <meta name="twitter:title" content="Thurin - Private Identity Verification with ZK Proofs">
-  <meta name="twitter:description" content="Prove you're human without revealing who you are. Privacy-preserving identity verification using zero-knowledge proofs and your mobile driver's license.">
+  <meta name="twitter:title" content="Thurin — Identity Infrastructure for the New Web">
+  <meta name="twitter:description" content="Zero-knowledge identity verification, on-chain PGP attestations, and cryptographic identity exploration.">
   <meta name="twitter:image" content="https://thurin.id/images/og-image.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <script>
+    (function() {
+      var t = localStorage.getItem('thurin-landing-theme');
+      if (t && ['thurin','dark','light'].indexOf(t) !== -1) {
+        document.documentElement.setAttribute('data-theme', t);
+      }
+    })();
+  </script>
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* ── Theme Variables ── */
+    :root[data-theme="thurin"] {
+      --color-bg:              #1a1a12;
+      --color-surface:         #252518;
+      --color-surface-deep:    #151510;
+      --color-surface-active:  #2a2a1e;
+      --color-border:          #3a3a2a;
+      --color-text:            #faf9f5;
+      --color-text-muted:      #a8a598;
+      --color-heading:         #7c9a3e;
+      --color-primary:         #7c9a3e;
+      --color-primary-dim:     #5c7a2e;
+      --color-primary-light:   #96b84e;
+      --color-primary-glow:    rgba(124, 154, 62, 0.12);
+      --color-secondary:       #c9a227;
+      --color-btn-primary-text: #1a1a12;
+      --color-vignette-a:      rgba(124, 154, 62, 0.03);
+      --color-vignette-b:      rgba(201, 162, 39, 0.02);
+      --color-scrawl:          rgba(124, 154, 62, 0.04);
     }
 
-    :root {
-      --bg: #1a1a12;
-      --bg-secondary: #252518;
-      --text: #faf9f5;
-      --text-secondary: #a8a598;
-      --accent: #7c9a3e;
-      --accent-hover: #5c7a2e;
-      --gold: #c9a227;
-      --orange: #d4763a;
-      --border: #3a3a2a;
+    :root[data-theme="dark"] {
+      --color-bg:              #141010;
+      --color-surface:         #1e1918;
+      --color-surface-deep:    #110e0c;
+      --color-surface-active:  #1a1510;
+      --color-border:          #352a22;
+      --color-text:            #ede5d8;
+      --color-text-muted:      #a09080;
+      --color-heading:         #f0ece4;
+      --color-primary:         #c9a227;
+      --color-primary-dim:     #8a7020;
+      --color-primary-light:   #e0c050;
+      --color-primary-glow:    rgba(201, 162, 39, 0.12);
+      --color-secondary:       #d4a04a;
+      --color-btn-primary-text: #141010;
+      --color-vignette-a:      rgba(155, 35, 53, 0.04);
+      --color-vignette-b:      rgba(201, 162, 39, 0.03);
+      --color-scrawl:          rgba(201, 162, 39, 0.035);
+    }
+
+    :root[data-theme="light"] {
+      --color-bg:              #faf9f5;
+      --color-surface:         #f0efe8;
+      --color-surface-deep:    #e8e7e0;
+      --color-surface-active:  #edecd6;
+      --color-border:          #d0cfc4;
+      --color-text:            #2a2a22;
+      --color-text-muted:      #6b6960;
+      --color-heading:         #5a7228;
+      --color-primary:         #5a7228;
+      --color-primary-dim:     #7c9a3e;
+      --color-primary-light:   #4a6020;
+      --color-primary-glow:    rgba(124, 154, 62, 0.10);
+      --color-secondary:       #a8861e;
+      --color-btn-primary-text: #faf9f5;
+      --color-vignette-a:      rgba(124, 154, 62, 0.03);
+      --color-vignette-b:      rgba(168, 134, 30, 0.02);
+      --color-scrawl:          rgba(90, 114, 40, 0.06);
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── Base ── */
+    html {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
       min-height: 100vh;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Header */
-    header {
-      padding: 24px 0;
-      border-bottom: 1px solid var(--accent);
-    }
-
-    .header-inner {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      background:
+        radial-gradient(ellipse at 20% 50%, var(--color-vignette-a), transparent 70%),
+        radial-gradient(ellipse at 80% 50%, var(--color-vignette-b), transparent 70%),
+        var(--color-bg);
     }
 
-    .logo {
+    .main-content {
+      position: relative;
+      flex: 1;
+    }
+
+    .main-content::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: url("images/scrawl-tile.svg");
+      background-size: 600px 260px;
+      opacity: var(--scrawl-opacity, 1);
+    }
+
+    :root[data-theme="thurin"] { --scrawl-opacity: 0.12; }
+    :root[data-theme="dark"]   { --scrawl-opacity: 0.10; }
+    :root[data-theme="light"]  { --scrawl-opacity: 0.25; }
+
+    a { color: var(--color-primary); text-decoration: none; }
+    a:hover { color: var(--color-primary-light); }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
+      width: 100%;
+    }
+
+    .header-border {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .header-brand {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 1.5rem;
+      text-decoration: none;
+      color: var(--color-text);
+    }
+
+    .header-brand svg { flex-shrink: 0; }
+
+    .header-wordmark {
+      font-size: 2rem;
       font-weight: 700;
       letter-spacing: -0.02em;
+      line-height: 1;
     }
 
-    .logo-text {
-      margin-right: -0.4em;
+    .header-wordmark-accent {
+      font-weight: 400;
+      color: var(--color-primary);
     }
 
-    .logo-accent {
-      color: var(--accent);
-    }
-
-    .nav-links {
+    .header-nav {
       display: flex;
-      gap: 16px;
       align-items: center;
+      gap: 1.5rem;
     }
 
-    .nav-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      display: flex;
+    .header-nav a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      color: var(--color-text-muted);
+      transition: color 0.2s;
     }
 
-    .nav-links a:hover {
-      color: var(--accent);
+    .header-nav a:hover { color: var(--color-primary); }
+
+    .theme-select {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 0.3rem 0.5rem;
+      cursor: pointer;
+      outline: none;
     }
 
-    /* Hero */
+    .theme-select:focus { border-color: var(--color-primary); }
+
+    /* ── Hero ── */
     .hero {
-      padding: 40px 0;
       text-align: center;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.5rem, 8vw, 4rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-      line-height: 1.1;
-      background: linear-gradient(135deg, var(--text) 0%, var(--gold) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero .tagline {
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      max-width: 500px;
+      padding: 5rem 2rem 3.5rem;
+      max-width: 960px;
       margin: 0 auto;
     }
 
-    .badge {
-      display: inline-block;
-      padding: 8px 16px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--gold);
-      border-radius: 100px;
-      font-size: 0.875rem;
-      color: var(--gold);
-      margin-bottom: 24px;
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: var(--color-heading);
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
     }
 
-    /* Features */
-    .features {
-      padding: 60px 0;
-      border-top: 1px solid var(--border);
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--color-text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
     }
 
-    .features h2 {
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-secondary);
-      margin-bottom: 32px;
-      text-align: center;
-    }
-
-    .feature-grid {
+    /* ── App Cards ── */
+    .apps {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      text-align: center;
+      gap: 1.5rem;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
     }
 
-    @media (max-width: 600px) {
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .feature {
-      padding: 24px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
+    .app-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
       border-radius: 12px;
-      transition: border-color 0.2s;
-    }
-
-    .feature:hover {
-      border-color: var(--accent);
-    }
-
-    .feature h3 {
-      font-size: 1rem;
-      margin-bottom: 8px;
-      color: var(--gold);
-    }
-
-    .feature p {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-    }
-
-    /* How it works */
-    .how-it-works {
-      padding: 60px 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .how-it-works h2 {
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-secondary);
-      margin-bottom: 32px;
-      text-align: center;
-    }
-
-    .steps {
+      padding: 2rem 1.75rem;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-    }
-
-    .step {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 20px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-    }
-
-    .step-number {
-      flex-shrink: 0;
-      width: 28px;
-      height: 28px;
-      display: flex;
       align-items: center;
-      justify-content: center;
-      background: var(--accent);
-      color: var(--bg);
-      border-radius: 50%;
-      font-size: 0.875rem;
-      font-weight: 600;
-    }
-
-    .step-content h3 {
-      font-size: 1rem;
-      margin-bottom: 4px;
-    }
-
-    .step-content p {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-    }
-
-    /* CTA */
-    .cta {
-      padding: 80px 0;
       text-align: center;
-      border-top: 1px solid var(--border);
+      gap: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .cta h2 {
-      font-size: 1.75rem;
-      margin-bottom: 16px;
+    .app-card:hover {
+      border-color: var(--color-primary-dim);
+      box-shadow: 0 0 24px var(--color-primary-glow);
     }
 
-    .cta p {
-      color: var(--text-secondary);
-      margin-bottom: 32px;
+    .app-card-icon { flex-shrink: 0; }
+
+    .app-card h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--color-heading);
+      letter-spacing: 0.04em;
     }
 
-    .button-group {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
+    .badge-demo {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--color-secondary);
+      border: 1px solid var(--color-secondary);
+      border-radius: 3px;
+      padding: 0.15em 0.4em;
+      vertical-align: middle;
+      position: relative;
+      top: -0.1em;
     }
 
-    .button {
+    .app-card p {
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .app-card-link {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--color-primary);
+      letter-spacing: 0.03em;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.2s;
+      gap: 0.35rem;
+      transition: color 0.2s, gap 0.2s;
     }
 
-    .button-primary {
-      background: var(--accent);
-      color: white;
+    .app-card-link:hover {
+      color: var(--color-primary-light);
+      gap: 0.55rem;
     }
 
-    .button-primary:hover {
-      background: var(--accent-hover);
-    }
-
-    .button-secondary {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .button-secondary:hover {
-      border-color: var(--text-secondary);
-    }
-
-    /* Footer */
-    footer {
-      padding: 40px 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .footer-links {
+    /* ── Footer ── */
+    .footer {
+      margin-top: auto;
+      border-top: 1px solid var(--color-border);
+      padding: 2.5rem 2rem 2rem;
       display: flex;
-      gap: 24px;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .footer-columns {
+      display: flex;
+      gap: 4rem;
       justify-content: center;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
     }
 
-    .footer-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.875rem;
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
     }
 
-    .footer-links a:hover {
-      color: var(--accent);
+    .footer-col-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.3rem;
     }
 
-    .copyright {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
+    .footer-col a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+      transition: color 0.2s;
     }
 
-    /* Responsive */
-    @media (max-width: 600px) {
-      .hero {
-        padding: 60px 0;
+    .footer-col a:hover { color: var(--color-primary); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+    }
+
+    .footer-bottom a {
+      color: var(--color-text-muted);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+    }
+
+    .footer-bottom a:hover { color: var(--color-primary); }
+
+    .mobile-break { display: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .header { padding: 1rem 1.25rem; }
+      .header-wordmark { font-size: 1.5rem; }
+      .header-brand svg { width: 36px; height: 36px; }
+      .header-nav { gap: 1rem; }
+
+      .mobile-break { display: inline; }
+
+      .hero { padding: 3.5rem 1.5rem 2.5rem; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero p { font-size: 1.05rem; }
+
+      .apps {
+        grid-template-columns: 1fr;
+        padding: 0 1.25rem 3.5rem;
+        gap: 1.25rem;
       }
 
-      .features, .how-it-works, .cta {
-        padding: 48px 0;
+      .footer-columns { gap: 2.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      .header-wordmark { font-size: 1.3rem; }
+      .header-brand svg { width: 30px; height: 30px; }
+      .header-nav a.nav-text { display: none; }
+      .hero h1 { font-size: 1.8rem; }
+
+      .footer-columns {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+        text-align: center;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <div class="logo">
-        <svg viewBox="0 0 100 100" width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Header -->
+  <div class="header-border">
+  <header class="header">
+    <a href="/" class="header-brand">
+      <svg viewBox="20 20 60 65" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
+        <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+        <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+        <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+        <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <span class="header-wordmark">Thurin<span class="header-wordmark-accent">.id</span></span>
+    </a>
+    <nav class="header-nav">
+      <select class="theme-select" id="themeToggle" aria-label="Theme">
+        <option value="thurin">Thurin</option>
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+      </select>
+    </nav>
+  </header>
+  </div>
+
+  <main class="main-content">
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Prove more. <br class="mobile-break">Reveal less.</h1>
+    <p>Cryptographic identity infrastructure for the new web.</p>
+  </section>
+
+  <!-- App Cards -->
+  <section class="apps">
+
+    <!-- Sigil -->
+    <div class="app-card">
+      <div class="app-card-icon">
+        <svg viewBox="20 20 60 65" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
           <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
           <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
           <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
           <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
         </svg>
-        <span class="logo-text">Thurin</span><span class="logo-accent">.id</span>
       </div>
-      <nav class="nav-links">
-        <a href="https://docs.thurin.id" target="_blank" rel="noopener noreferrer">Docs</a>
-        <a href="https://github.com/thurin-labs" target="_blank" rel="noopener noreferrer">GitHub</a>
-      </nav>
+      <h2>Sigil</h2>
+      <p>Private identity verification with zero-knowledge proofs.</p>
+      <a href="https://app.thurin.id" class="app-card-link app-link" target="_blank" rel="noopener noreferrer">Launch Demo &rarr;</a>
     </div>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div class="container">
-        <span class="badge">Coming Soon</span>
-        <h1>Verify your identity<br>Keep your privacy</h1>
-        <p class="tagline">Zero-knowledge proofs for digital identity<br>Privacy-preserving verification for the new web</p>
-        <a href="#" class="button button-primary demo-link" style="display: inline-block; width: auto; margin-top: 24px;">Try Demo</a>
+    <!-- Signet -->
+    <div class="app-card">
+      <div class="app-card-icon">
+        <svg viewBox="20 20 76 76" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
+          <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <rect x="63" y="72" width="22" height="18" rx="2" fill="none" stroke="#c9a227" stroke-width="3"/>
+          <path d="M68 72 V66 Q68 58 74 58 Q80 58 80 66 V72" fill="none" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
+        </svg>
       </div>
-    </section>
+      <h2>Signet</h2>
+      <p>Link your ETH address to your GPG key on-chain.</p>
+      <a href="https://signet.thurin.id" class="app-card-link app-link" target="_blank" rel="noopener noreferrer">Launch &rarr;</a>
+    </div>
 
-    <section class="features">
-      <div class="container">
-        <h2>Built for</h2>
-        <div class="feature-grid">
-          <div class="feature">
-            <h3>DeFi & DAOs</h3>
-            <p>Fair airdrops, one-person-one-vote, sybil-proof governance</p>
-          </div>
-          <div class="feature">
-            <h3>Social & Communities</h3>
-            <p>Human-only spaces without doxxing your members</p>
-          </div>
-          <div class="feature">
-            <h3>Compliance & Access</h3>
-            <p>Jurisdiction and identity checks, zero personal data shared</p>
-          </div>
-        </div>
+    <!-- Scry -->
+    <div class="app-card">
+      <div class="app-card-icon">
+        <svg viewBox="20 20 76 76" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
+          <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="72" cy="72" r="12" fill="none" stroke="#c9a227" stroke-width="3.5"/>
+          <line x1="81" y1="81" x2="92" y2="92" stroke="#c9a227" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
       </div>
-    </section>
+      <h2>Scry</h2>
+      <p>Explore on-chain PGP attestations and verify proofs.</p>
+      <a href="https://scry.thurin.id" class="app-card-link app-link" target="_blank" rel="noopener noreferrer">Launch &rarr;</a>
+    </div>
 
-    <section class="how-it-works">
-      <div class="container">
-        <h2>How it works</h2>
-        <div class="steps">
-          <div class="step">
-            <span class="step-number">1</span>
-            <div class="step-content">
-              <h3>Connect your web3 wallet</h3>
-              <p>Your proof will be bound to your wallet address</p>
-            </div>
-          </div>
-          <div class="step">
-            <span class="step-number">2</span>
-            <div class="step-content">
-              <h3>Share from your phone</h3>
-              <p>Securely share identity data from your phone</p>
-            </div>
-          </div>
-          <div class="step">
-            <span class="step-number">3</span>
-            <div class="step-content">
-              <h3>Generate a ZK proof</h3>
-              <p>Prove claims about your ID without revealing personal information</p>
-            </div>
-          </div>
-          <div class="step">
-            <span class="step-number">4</span>
-            <div class="step-content">
-              <h3>Verify on-chain</h3>
-              <p>Your proof is verified by a smart contract, permanently</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+  </section>
 
-    <section class="cta">
-      <div class="container">
-        <h2>Built for developers</h2>
-        <p>Open source SDK. Permissionless contracts. Integrate in minutes.</p>
-        <div class="button-group">
-          <a href="https://docs.thurin.id" class="button button-primary" target="_blank" rel="noopener noreferrer">
-            View Docs
-          </a>
-          <a href="https://github.com/thurin-labs" class="button button-secondary" target="_blank" rel="noopener noreferrer">
-            View on GitHub
-          </a>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <footer>
-    <div class="container">
-      <div class="footer-links">
-        <a href="https://thurinlabs.eth.limo" class="ens-link" target="_blank" rel="noopener noreferrer">thurinlabs.eth</a>
-        <a href="https://docs.thurin.id" target="_blank" rel="noopener noreferrer">Docs</a>
-        <a href="https://github.com/thurin-labs" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://farcaster.xyz/thurinlabs.eth" target="_blank" rel="noopener noreferrer">Farcaster</a>
-        <a href="https://x.com/thurinlabs" target="_blank" rel="noopener noreferrer">X</a>
-        <a href="privacy/" class="privacy-link">Privacy</a>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-columns">
+      <div class="footer-col">
+        <span class="footer-col-label">Apps</span>
+        <a href="https://app.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Sigil</a>
+        <a href="https://signet.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Signet</a>
+        <a href="https://scry.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Scry</a>
       </div>
-      <p class="copyright">&copy; 2026 Thurin Labs. Open source under Apache-2.0.</p>
+      <div class="footer-col">
+        <span class="footer-col-label">Social</span>
+        <a href="https://x.com/thurinlabs" target="_blank" rel="noopener noreferrer">X</a>
+        <a href="https://farcaster.xyz/thurinlabs.eth" target="_blank" rel="noopener noreferrer">Farcaster</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-label">Dev</span>
+        <a href="https://github.com/thurin-labs" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://docs.thurin.id" target="_blank" rel="noopener noreferrer">Docs</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <a href="https://thurinlabs.eth.limo" class="ens-link" target="_blank" rel="noopener noreferrer">thurinlabs.eth</a>
+      <a href="privacy/" class="privacy-link">Privacy</a>
+      <span>&copy; 2026 Thurin Labs</span>
     </div>
   </footer>
+
   <script>
-    // Set links based on current domain
-    const host = window.location.host;
-    let demoUrl = 'https://app.thurin.id';
-    let ensUrl = 'https://thurinlabs.eth.limo';
-    let privacyUrl = 'https://thurin.id/privacy/';
+    // Theme toggle
+    (function() {
+      var select = document.getElementById('themeToggle');
+      var current = document.documentElement.getAttribute('data-theme') || 'thurin';
+      select.value = current;
 
-    if (host.endsWith('thurinlabs.eth.limo')) {
-      demoUrl = 'https://app.thurinlabs.eth.limo';
-      ensUrl = 'https://thurinlabs.eth.limo';
-      privacyUrl = 'privacy/';
-    } else if (host.endsWith('thurinlabs.eth')) {
-      demoUrl = 'https://app.thurinlabs.eth';
-      ensUrl = 'https://thurinlabs.eth';
-      privacyUrl = 'privacy/';
-    } else if (host.includes('thurin.id')) {
-      demoUrl = 'https://app.thurin.id';
-      ensUrl = 'https://thurinlabs.eth.limo';
-      privacyUrl = 'privacy/';
-    }
+      select.addEventListener('change', function() {
+        var theme = select.value;
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('thurin-landing-theme', theme);
+      });
+    })();
 
-    document.querySelectorAll('.demo-link').forEach(link => link.href = demoUrl);
-    document.querySelectorAll('.ens-link').forEach(link => link.href = ensUrl);
-    document.querySelectorAll('.privacy-link').forEach(link => link.href = privacyUrl);
+    // Domain-aware link rewriting for ENS gateway
+    (function() {
+      var host = window.location.host;
+      var isEthLimo = host.endsWith('thurinlabs.eth.limo');
+      var isEth = host.endsWith('thurinlabs.eth');
+
+      if (!isEthLimo && !isEth) return;
+
+      var suffix = isEth ? 'thurinlabs.eth' : 'thurinlabs.eth.limo';
+
+      // Rewrite app links
+      var appMap = {
+        'https://app.thurin.id':    'https://app.' + suffix,
+        'https://signet.thurin.id': 'https://signet.' + suffix,
+        'https://scry.thurin.id':   'https://scry.' + suffix
+      };
+
+      document.querySelectorAll('.app-link').forEach(function(a) {
+        var href = a.getAttribute('href');
+        if (appMap[href]) a.setAttribute('href', appMap[href]);
+      });
+
+      // Rewrite ENS link
+      document.querySelectorAll('.ens-link').forEach(function(a) {
+        a.setAttribute('href', 'https://' + suffix);
+      });
+
+      // Privacy is always relative on ENS
+      document.querySelectorAll('.privacy-link').forEach(function(a) {
+        a.setAttribute('href', 'privacy/');
+      });
+    })();
   </script>
+
 </body>
 </html>
