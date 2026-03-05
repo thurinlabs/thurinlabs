@@ -357,7 +357,7 @@
     <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: February 2026</p>
 
     <h2>Overview</h2>
-    <p>Thurin Labs LLC ("Thurin," "we," "our," or "us") builds decentralized identity infrastructure. We operate three products: <strong>Sigil</strong> (zero-knowledge identity verification), <strong>Signet</strong> (on-chain PGP attestations), and <strong>Scry</strong> (identity graph explorer). This policy covers all three.</p>
+    <p>Thurin Labs LLC ("Thurin," "we," "our," or "us") builds decentralized identity infrastructure. We operate three products: <strong>Sigil</strong> (zero-knowledge identity verification), <strong>Signet</strong> (on-chain PGP identity claims), and <strong>Scry</strong> (identity graph explorer). This policy covers all three.</p>
 
     <div class="highlight-box">
       <p>Thurin products are designed to be fully decentralized and non-custodial. We do not operate backends or databases. Your data stays on your device, on the public blockchain, or on public keyservers you already use.</p>
@@ -378,7 +378,7 @@
         <tr>
           <td>Ethereum address</td>
           <td>Sigil, Signet</td>
-          <td>Binds proofs and attestations to your wallet</td>
+          <td>Binds proofs and identity claims to your wallet</td>
         </tr>
         <tr>
           <td>GPG fingerprint</td>
@@ -391,7 +391,7 @@
           <td>Sybil resistance (prevents duplicate claims)</td>
         </tr>
         <tr>
-          <td>Proof / attestation timestamp</td>
+          <td>Proof / claim timestamp</td>
           <td>Sigil, Signet</td>
           <td>Verification timing</td>
         </tr>
@@ -401,7 +401,7 @@
     <h3>Data processed client-side only</h3>
     <ul>
       <li><strong>Sigil:</strong> Mobile driver's license data is read and used to generate a ZK proof entirely on your device. Raw identity data is never transmitted.</li>
-      <li><strong>Signet:</strong> Your GPG private key is used locally to clearsign an attestation message. The private key never leaves your machine.</li>
+      <li><strong>Signet:</strong> Your GPG private key is used locally to clearsign a claim message. The private key never leaves your machine.</li>
       <li><strong>Scry:</strong> Searches and signature verifications happen in your browser via openpgp.js. Public keys are fetched from keys.openpgp.org. No data is sent to Thurin servers.</li>
     </ul>
 
@@ -428,15 +428,15 @@
     <h3>Signet</h3>
     <ol>
       <li>You connect your Ethereum wallet and sign your GPG fingerprint</li>
-      <li>You clearsign an attestation message with your GPG key</li>
-      <li>The dual-signed attestation is published to the PGPRegistry smart contract</li>
+      <li>You clearsign a claim message with your GPG key</li>
+      <li>The dual-signed identity claim is published to the PGPRegistry smart contract</li>
       <li>No backend is involved. The transaction goes directly from your wallet to the chain.</li>
     </ol>
 
     <h3>Scry</h3>
     <ol>
       <li>You search by ETH address, ENS name, or GPG fingerprint</li>
-      <li>Scry reads attestation data from the public blockchain</li>
+      <li>Scry reads identity claim data from the public blockchain</li>
       <li>Public keys are fetched from keys.openpgp.org and email ownership is verified via OpenPGP</li>
       <li>All verification happens client-side in your browser</li>
     </ol>
@@ -444,7 +444,7 @@
     <h2>Third Parties</h2>
     <p>We do not share data with third parties for marketing or advertising.</p>
     <ul>
-      <li><strong>Blockchain networks:</strong> Ethereum stores verification records and attestations on-chain</li>
+      <li><strong>Blockchain networks:</strong> Ethereum stores verification records and identity claims on-chain</li>
       <li><strong>Keyservers:</strong> Scry fetches public keys from keys.openpgp.org (a public service operated by the OpenPGP community)</li>
       <li><strong>ENS:</strong> Scry resolves ENS names to Ethereum addresses</li>
       <li>No third-party analytics or tracking services are used</li>

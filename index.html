@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thurin — Identity Infrastructure for the New Web</title>
-  <meta name="description" content="Thurin is identity infrastructure for the new web. Verify with zero-knowledge proofs, link ETH addresses to GPG keys on-chain, and explore PGP attestations.">
+  <meta name="description" content="Thurin is identity infrastructure for the new web. Verify with zero-knowledge proofs, link ETH addresses to GPG keys on-chain, and explore identity claims.">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="canonical" href="https://thurin.id">
 
@@ -12,14 +12,14 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://thurin.id">
   <meta property="og:title" content="Thurin — Identity Infrastructure for the New Web">
-  <meta property="og:description" content="Thurin is identity infrastructure for the new web. Verify with zero-knowledge proofs, link ETH addresses to GPG keys on-chain, and explore PGP attestations.">
+  <meta property="og:description" content="Thurin is identity infrastructure for the new web. Verify with zero-knowledge proofs, link ETH addresses to GPG keys on-chain, and explore identity claims.">
   <meta property="og:image" content="https://thurin.id/images/og-image.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@thurinlabs">
   <meta name="twitter:title" content="Thurin — Identity Infrastructure for the New Web">
-  <meta name="twitter:description" content="Zero-knowledge identity verification, on-chain PGP attestations, and cryptographic identity exploration.">
+  <meta name="twitter:description" content="Zero-knowledge identity verification, on-chain identity claims, and cryptographic identity exploration.">
   <meta name="twitter:image" content="https://thurin.id/images/og-image.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -575,7 +575,7 @@
   <section class="hero">
     <h1>Prove more. <br class="mobile-break">Reveal less.</h1>
     <p>Identity on the internet is broken. To prove who you are, you have to give up who you are. We think cryptography can fix that.</p>
-    <p>Thurin builds open, decentralized infrastructure for a world where identity is self-sovereign, privacy is the default, and trust is verified by math. No backends. No intermediaries. No data collection. Just cryptography, smart contracts, and you. Zero-knowledge proofs, on-chain attestations, and public-key cryptography are the foundation. We're building the tools to put them to work.</p>
+    <p>Thurin builds open, decentralized infrastructure for a world where identity is self-sovereign, privacy is the default, and trust is verified by math. No backends. No intermediaries. No data collection. Just cryptography, smart contracts, and you. Zero-knowledge proofs, on-chain identity claims, and public-key cryptography are the foundation. We're building the tools to put them to work.</p>
   </section>
 
   <!-- App Cards -->
@@ -687,10 +687,10 @@
         </svg>
         <a href="https://signet.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Signet</a>
       </h3>
-      <p>Create a permanent, verifiable link between your Ethereum address and your GPG key. Signet walks you through a four-step attestation flow that publishes your cryptographic identity on-chain.</p>
+      <p>Create a permanent, verifiable link between your Ethereum address and your GPG key. Signet walks you through a four-step flow that publishes your cryptographic identity claim on-chain.</p>
       <ul class="app-detail-features">
         <li>Many-to-many ETH address and GPG key mapping</li>
-        <li>Dual-signed attestation: wallet signature + GPG clearsign</li>
+        <li>Dual-signed identity claim: wallet signature + GPG clearsign</li>
         <li>On-chain registry with O(1) duplicate detection</li>
         <li>Fully non-custodial, no intermediaries</li>
       </ul>
@@ -707,11 +707,11 @@
       </div>
       <div class="app-detail-step">
         <span class="step-num">3</span>
-        <div class="step-text"><strong>GPG clearsign</strong><span>Sign the attestation message with your GPG key</span></div>
+        <div class="step-text"><strong>GPG clearsign</strong><span>Sign the claim message with your GPG key</span></div>
       </div>
       <div class="app-detail-step">
         <span class="step-num">4</span>
-        <div class="step-text"><strong>Publish on-chain</strong><span>Submit the dual-signed attestation to the PGPRegistry contract</span></div>
+        <div class="step-text"><strong>Publish on-chain</strong><span>Submit the dual-signed identity claim to the PGPRegistry contract</span></div>
       </div>
     </div>
   </section>
@@ -730,11 +730,11 @@
         </svg>
         <a href="https://scry.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Scry</a>
       </h3>
-      <p>Explore and verify the Thurin identity graph. Look up any address or key, verify email ownership through OpenPGP, and validate on-chain attestations client-side.</p>
+      <p>Explore and verify the Thurin identity graph. Look up any address or key, verify email ownership through OpenPGP, and validate on-chain identity claims client-side.</p>
       <ul class="app-detail-features">
         <li>Search by ETH address, ENS name, or GPG fingerprint</li>
         <li>Email ownership verification via OpenPGP</li>
-        <li>Client-side signature and attestation verification</li>
+        <li>Client-side signature and claim verification</li>
         <li>Sigil verification status for addresses (coming soon)</li>
       </ul>
     </div>
@@ -746,11 +746,11 @@
       </div>
       <div class="app-detail-step">
         <span class="step-num">2</span>
-        <div class="step-text"><strong>See the full picture</strong><span>On-chain attestations, linked keys, and email ownership</span></div>
+        <div class="step-text"><strong>See the full picture</strong><span>On-chain identity claims, linked keys, and email ownership</span></div>
       </div>
       <div class="app-detail-step">
         <span class="step-num">3</span>
-        <div class="step-text"><strong>Verify everything client-side</strong><span>Signatures, proofs, and attestations validated in your browser</span></div>
+        <div class="step-text"><strong>Verify everything client-side</strong><span>Signatures, proofs, and claims validated in your browser</span></div>
       </div>
     </div>
   </section>
