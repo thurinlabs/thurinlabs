@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thurin — Identity Infrastructure for the New Web</title>
-  <meta name="description" content="Thurin is identity infrastructure for the new web. Verify with zero-knowledge proofs, link ETH addresses to GPG keys on-chain, and explore identity claims.">
+  <meta name="description" content="Thurin is identity infrastructure for the new web. Verify with zero-knowledge proofs, link ETH addresses to PGP keys on-chain, and verify identity proofs.">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="canonical" href="https://thurin.id">
 
@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://thurin.id">
   <meta property="og:title" content="Thurin — Identity Infrastructure for the New Web">
-  <meta property="og:description" content="Thurin is identity infrastructure for the new web. Verify with zero-knowledge proofs, link ETH addresses to GPG keys on-chain, and explore identity claims.">
+  <meta property="og:description" content="Thurin is identity infrastructure for the new web. Verify with zero-knowledge proofs, link ETH addresses to PGP keys on-chain, and verify identity proofs.">
   <meta property="og:image" content="https://thurin.id/images/og-image.png">
 
   <!-- Twitter -->
@@ -609,7 +609,7 @@
         </svg>
       </div>
       <h2>Signet</h2>
-      <p>Link your ETH address to your GPG key on-chain.</p>
+      <p>Link your ETH address to your PGP key on-chain.</p>
       <a href="https://signet.thurin.id" class="app-card-link app-link" target="_blank" rel="noopener noreferrer">Launch &rarr;</a>
     </div>
 
@@ -687,10 +687,10 @@
         </svg>
         <a href="https://signet.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Signet</a>
       </h3>
-      <p>Create a permanent, verifiable link between your Ethereum address and your GPG key. Signet walks you through a four-step flow that publishes your cryptographic identity claim on-chain.</p>
+      <p>Create a permanent, verifiable link between your Ethereum address and your PGP key. Signet walks you through a four-step flow that publishes your cryptographic identity claim on-chain.</p>
       <ul class="app-detail-features">
-        <li>Many-to-many ETH address and GPG key mapping</li>
-        <li>Dual-signed identity claim: wallet signature + GPG clearsign</li>
+        <li>Many-to-many ETH address and PGP key mapping</li>
+        <li>Dual-signed identity claim: wallet signature + PGP clearsign</li>
         <li>On-chain registry with O(1) duplicate detection</li>
         <li>Fully non-custodial, no intermediaries</li>
       </ul>
@@ -703,11 +703,11 @@
       </div>
       <div class="app-detail-step">
         <span class="step-num">2</span>
-        <div class="step-text"><strong>Sign your fingerprint</strong><span>Your wallet signs your GPG fingerprint to prove ownership</span></div>
+        <div class="step-text"><strong>Sign your fingerprint</strong><span>Your wallet signs your PGP fingerprint to prove ownership</span></div>
       </div>
       <div class="app-detail-step">
         <span class="step-num">3</span>
-        <div class="step-text"><strong>GPG clearsign</strong><span>Sign the claim message with your GPG key</span></div>
+        <div class="step-text"><strong>PGP clearsign</strong><span>Sign the claim message with your PGP key</span></div>
       </div>
       <div class="app-detail-step">
         <span class="step-num">4</span>
@@ -730,11 +730,11 @@
         </svg>
         <a href="https://scry.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Scry</a>
       </h3>
-      <p>Explore and verify the Thurin identity graph. Look up any address or key, verify email ownership through OpenPGP, and validate on-chain identity claims client-side.</p>
+      <p>Explore and verify the Thurin identity graph. Look up any address or key, verify on-chain identity claims, and validate cryptographic identity proofs — all decentralized.</p>
       <ul class="app-detail-features">
-        <li>Search by ETH address, ENS name, or GPG fingerprint</li>
-        <li>Email ownership verification via OpenPGP</li>
-        <li>Client-side signature and claim verification</li>
+        <li>Search by ETH address, ENS name, or PGP fingerprint</li>
+        <li>Verify identity proofs across social media, DNS, and email</li>
+        <li>On-chain claim and signature verification</li>
         <li>Sigil verification status for addresses (coming soon)</li>
       </ul>
     </div>
@@ -742,15 +742,15 @@
       <div class="app-detail-steps-label">How it works</div>
       <div class="app-detail-step">
         <span class="step-num">1</span>
-        <div class="step-text"><strong>Look up an identity</strong><span>Search by ETH address, ENS name, or GPG fingerprint</span></div>
+        <div class="step-text"><strong>Look up an identity</strong><span>Search by ETH address, ENS name, or PGP fingerprint</span></div>
       </div>
       <div class="app-detail-step">
         <span class="step-num">2</span>
-        <div class="step-text"><strong>See the full picture</strong><span>On-chain identity claims, linked keys, and email ownership</span></div>
+        <div class="step-text"><strong>See the full picture</strong><span>On-chain claims, linked keys, email, and identity proofs</span></div>
       </div>
       <div class="app-detail-step">
         <span class="step-num">3</span>
-        <div class="step-text"><strong>Verify everything client-side</strong><span>Signatures, proofs, and claims validated in your browser</span></div>
+        <div class="step-text"><strong>Verify everything</strong><span>Signatures, social proofs, and claims verified decentrally</span></div>
       </div>
     </div>
   </section>
@@ -770,6 +770,7 @@
         <span class="footer-col-label">Social</span>
         <a href="https://x.com/thurinlabs" target="_blank" rel="noopener noreferrer">X</a>
         <a href="https://farcaster.xyz/thurinlabs.eth" target="_blank" rel="noopener noreferrer">Farcaster</a>
+        <a href="https://www.linkedin.com/company/thurin-labs/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </div>
       <div class="footer-col">
         <span class="footer-col-label">Dev</span>
