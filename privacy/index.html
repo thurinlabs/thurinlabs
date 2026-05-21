@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - Thurin</title>
-  <meta name="description" content="Thurin Privacy Policy - How we protect your data across Sigil, Signet, and Scry.">
+  <title>Privacy Policy - Thurin Labs</title>
+  <meta name="description" content="Thurin Labs Privacy Policy. How Thurin protects your data. Privacy by default.">
   <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -357,7 +357,7 @@
     <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: February 2026</p>
 
     <h2>Overview</h2>
-    <p>Thurin Labs LLC ("Thurin," "we," "our," or "us") builds decentralized identity infrastructure. We operate three products: <strong>Sigil</strong> (zero-knowledge identity verification), <strong>Signet</strong> (on-chain PGP identity claims), and <strong>Scry</strong> (identity graph explorer). This policy covers all three.</p>
+    <p>Thurin Labs LLC ("Thurin Labs," "we," "our," or "us") builds <strong>Thurin</strong> (<a href="https://thurin.id">thurin.id</a>), decentralized identity infrastructure for Ethereum. Thurin includes an identity explorer and an on-chain attestation flow (Signet). This policy covers Thurin.</p>
 
     <div class="highlight-box">
       <p>Thurin products are designed to be fully decentralized and non-custodial. We do not operate backends or databases. Your data stays on your device, on the public blockchain, or on public keyservers you already use.</p>
@@ -377,8 +377,8 @@
       <tbody>
         <tr>
           <td>Ethereum address</td>
-          <td>Sigil, Signet</td>
-          <td>Binds proofs and identity claims to your wallet</td>
+          <td>Signet</td>
+          <td>Binds identity claims to your wallet</td>
         </tr>
         <tr>
           <td>GPG fingerprint</td>
@@ -386,13 +386,8 @@
           <td>Links your public key to your address</td>
         </tr>
         <tr>
-          <td>Cryptographic nullifier</td>
-          <td>Sigil</td>
-          <td>Sybil resistance (prevents duplicate claims)</td>
-        </tr>
-        <tr>
-          <td>Proof / claim timestamp</td>
-          <td>Sigil, Signet</td>
+          <td>Claim timestamp</td>
+          <td>Signet</td>
           <td>Verification timing</td>
         </tr>
       </tbody>
@@ -400,9 +395,8 @@
 
     <h3>Data processed client-side only</h3>
     <ul>
-      <li><strong>Sigil:</strong> Mobile driver's license data is read and used to generate a ZK proof entirely on your device. Raw identity data is never transmitted.</li>
       <li><strong>Signet:</strong> Your GPG private key is used locally to clearsign a claim message. The private key never leaves your machine.</li>
-      <li><strong>Scry:</strong> Searches and signature verifications happen in your browser via openpgp.js. Public keys are fetched from keys.openpgp.org. No data is sent to Thurin servers.</li>
+      <li><strong>Explorer:</strong> Searches and signature verifications happen in your browser via openpgp.js. Public keys are fetched from keys.openpgp.org. No data is sent to Thurin servers.</li>
     </ul>
 
     <h3>Data we do NOT collect</h3>
@@ -415,17 +409,9 @@
       <li>Analytics, telemetry, or usage data</li>
     </ul>
 
-    <h2>How Each Product Works</h2>
+    <h2>How Thurin Works</h2>
 
-    <h3>Sigil</h3>
-    <ol>
-      <li>You present your mobile driver's license from Apple or Google Wallet</li>
-      <li>Your device generates a zero-knowledge proof locally</li>
-      <li>The proof confirms claims (e.g., "valid license" or "unique person") without revealing underlying data</li>
-      <li>Only the proof result goes on-chain. Your personal data stays on your device.</li>
-    </ol>
-
-    <h3>Signet</h3>
+    <h3>Signet (attestation flow)</h3>
     <ol>
       <li>You connect your Ethereum wallet and sign your GPG fingerprint</li>
       <li>You clearsign a claim message with your GPG key</li>
@@ -433,10 +419,10 @@
       <li>No backend is involved. The transaction goes directly from your wallet to the chain.</li>
     </ol>
 
-    <h3>Scry</h3>
+    <h3>Identity explorer</h3>
     <ol>
       <li>You search by ETH address, ENS name, or GPG fingerprint</li>
-      <li>Scry reads identity claim data from the public blockchain</li>
+      <li>Thurin reads identity claim data from the public blockchain</li>
       <li>Public keys are fetched from keys.openpgp.org and email ownership is verified via OpenPGP</li>
       <li>All verification happens client-side in your browser</li>
     </ol>
@@ -445,8 +431,8 @@
     <p>We do not share data with third parties for marketing or advertising.</p>
     <ul>
       <li><strong>Blockchain networks:</strong> Ethereum stores verification records and identity claims on-chain</li>
-      <li><strong>Keyservers:</strong> Scry fetches public keys from keys.openpgp.org (a public service operated by the OpenPGP community)</li>
-      <li><strong>ENS:</strong> Scry resolves ENS names to Ethereum addresses</li>
+      <li><strong>Keyservers:</strong> Thurin fetches public keys from keys.openpgp.org (a public service operated by the OpenPGP community)</li>
+      <li><strong>ENS:</strong> Thurin resolves ENS names to Ethereum addresses</li>
       <li>No third-party analytics or tracking services are used</li>
     </ul>
 
@@ -471,7 +457,7 @@
     </ul>
 
     <h2>Children's Privacy</h2>
-    <p>Sigil requires a valid mobile driver's license. Users must meet the age requirements of their jurisdiction's licensing authority. Signet and Scry have no age-gated content but require an Ethereum wallet to transact.</p>
+    <p>Thurin has no age-gated content. The attestation flow (Signet) requires an Ethereum wallet to transact.</p>
 
     <h2>Changes to This Policy</h2>
     <p>We may update this policy as we ship new products and features. Changes will be posted on this page with an updated date.</p>
@@ -494,9 +480,8 @@
     <div class="footer-columns">
       <div class="footer-col">
         <span class="footer-col-label">Home</span>
-        <a href="https://app.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Sigil</a>
-        <a href="https://signet.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Signet</a>
-        <a href="https://scry.thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Scry</a>
+        <a href="https://thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Thurin</a>
+        <a href="https://docs.thurin.id" target="_blank" rel="noopener noreferrer">Docs</a>
         <a href="../privacy/">Privacy</a>
       </div>
       <div class="footer-col">
@@ -542,9 +527,7 @@
       var suffix = isEth ? 'thurinlabs.eth' : 'thurinlabs.eth.limo';
 
       var appMap = {
-        'https://app.thurin.id':    'https://app.' + suffix,
-        'https://signet.thurin.id': 'https://signet.' + suffix,
-        'https://scry.thurin.id':   'https://scry.' + suffix
+        'https://thurin.id':        isEth ? 'https://thurin.eth' : 'https://thurin.eth.limo'
       };
 
       document.querySelectorAll('.app-link').forEach(function(a) {
