@@ -314,6 +314,13 @@
       gap: 0.55rem;
     }
 
+    .app-card-soon {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      letter-spacing: 0.03em;
+    }
+
     /* ── App Detail Sections ── */
     .app-detail {
       max-width: 960px;
@@ -578,8 +585,8 @@
     <p>Thurin builds open, decentralized infrastructure for a world where identity is self-sovereign, privacy is the default, and trust is verified by math. No backends. No intermediaries. No data collection. Just cryptography, smart contracts, and you. Zero-knowledge proofs, on-chain identity claims, and public-key cryptography are the foundation. We're building the tools to put them to work.</p>
   </section>
 
-  <!-- Visit Thurin -->
-  <section class="apps" style="grid-template-columns: 1fr; max-width: 520px;">
+  <!-- Products -->
+  <section class="apps">
     <div class="app-card">
       <div class="app-card-icon">
         <svg viewBox="20 20 76 76" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
@@ -592,6 +599,31 @@
       <h2>Thurin</h2>
       <p>Look up an identity, attest your own, verify any claim. The full Thurin stack at thurin.id.</p>
       <a href="https://thurin.id" class="app-card-link app-link" target="_blank" rel="noopener noreferrer">Visit Thurin &rarr;</a>
+    </div>
+    <div class="app-card">
+      <div class="app-card-icon">
+        <svg viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+          <rect x="22" y="38" width="32" height="26" rx="4" fill="none" stroke="#7c9a3e" stroke-width="4"/>
+          <path d="M29 38 V30 a9 9 0 0 1 18 0 V38" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="38" cy="48" r="3.5" fill="#c9a227"/>
+          <path d="M38 51 L38 56" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2>Mathom</h2>
+      <p>An air-gapped machine for PGP key custody, subkey provisioning, and release signing. A vault you visit, not a computer you use.</p>
+      <span class="app-card-soon">Coming soon</span>
+    </div>
+    <div class="app-card">
+      <div class="app-card-icon">
+        <svg viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+          <circle cx="34" cy="34" r="16" fill="none" stroke="#7c9a3e" stroke-width="4"/>
+          <path d="M46 46 L60 60" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+          <path d="M27 34 l5 5 l10 -12" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>Noir Audit Skill</h2>
+      <p>A Claude Code skill that runs a structured security audit on Noir zero-knowledge circuits. Underconstraints, nullifier soundness, privacy leaks.</p>
+      <a href="https://github.com/thurinlabs/noir-audit-skill" class="app-card-link" target="_blank" rel="noopener noreferrer">View on GitHub &rarr;</a>
     </div>
   </section>
 
