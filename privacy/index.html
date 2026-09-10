@@ -354,10 +354,10 @@
 
   <main class="content">
     <h1>Privacy Policy</h1>
-    <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: February 2026</p>
+    <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: September 2026</p>
 
     <h2>Overview</h2>
-    <p>Thurin Labs LLC ("Thurin Labs," "we," "our," or "us") builds <strong>Thurin</strong> (<a href="https://thurin.id">thurin.id</a>), decentralized identity infrastructure for Ethereum. Thurin includes an identity explorer and an on-chain attestation flow (Signet). This policy covers Thurin.</p>
+    <p>Thurin Labs LLC ("Thurin Labs," "we," "our," or "us") builds <strong>Thurin</strong> (<a href="https://thurin.id">thurin.id</a>), decentralized identity infrastructure for Ethereum. Thurin includes an identity explorer and an on-chain attestation flow (thurin.id/attest). This policy covers Thurin.</p>
 
     <div class="highlight-box">
       <p>Thurin products are designed to be fully decentralized and non-custodial. We do not operate backends or databases. Your data stays on your device, on the public blockchain, or on public keyservers you already use.</p>
@@ -377,17 +377,17 @@
       <tbody>
         <tr>
           <td>Ethereum address</td>
-          <td>Signet</td>
+          <td>Attestation flow</td>
           <td>Binds identity claims to your wallet</td>
         </tr>
         <tr>
-          <td>GPG fingerprint</td>
-          <td>Signet</td>
+          <td>PGP fingerprint</td>
+          <td>Attestation flow</td>
           <td>Links your public key to your address</td>
         </tr>
         <tr>
           <td>Claim timestamp</td>
-          <td>Signet</td>
+          <td>Attestation flow</td>
           <td>Verification timing</td>
         </tr>
       </tbody>
@@ -395,7 +395,7 @@
 
     <h3>Data processed client-side only</h3>
     <ul>
-      <li><strong>Signet:</strong> Your GPG private key is used locally to clearsign a claim message. The private key never leaves your machine.</li>
+      <li><strong>Attestation flow:</strong> Your PGP private key is used locally to clearsign a claim message. The private key never leaves your machine.</li>
       <li><strong>Explorer:</strong> Searches and signature verifications happen in your browser via openpgp.js. Public keys are fetched from keys.openpgp.org. No data is sent to Thurin servers.</li>
     </ul>
 
@@ -404,24 +404,24 @@
       <li>Names, addresses, dates of birth</li>
       <li>Driver's license or ID numbers</li>
       <li>Photos, biometrics, or facial data</li>
-      <li>Private keys (GPG or Ethereum)</li>
+      <li>Private keys (PGP or Ethereum)</li>
       <li>Email content or contacts</li>
       <li>Analytics, telemetry, or usage data</li>
     </ul>
 
     <h2>How Thurin Works</h2>
 
-    <h3>Signet (attestation flow)</h3>
+    <h3>Attestation flow (thurin.id/attest)</h3>
     <ol>
-      <li>You connect your Ethereum wallet and sign your GPG fingerprint</li>
-      <li>You clearsign a claim message with your GPG key</li>
+      <li>You connect your Ethereum wallet and sign your PGP fingerprint</li>
+      <li>You clearsign a claim message with your PGP key</li>
       <li>The dual-signed identity claim is published to the PGPRegistry smart contract</li>
       <li>No backend is involved. The transaction goes directly from your wallet to the chain.</li>
     </ol>
 
     <h3>Identity explorer</h3>
     <ol>
-      <li>You search by ETH address, ENS name, or GPG fingerprint</li>
+      <li>You search by ETH address, ENS name, or PGP fingerprint</li>
       <li>Thurin reads identity claim data from the public blockchain</li>
       <li>Public keys are fetched from keys.openpgp.org and email ownership is verified via OpenPGP</li>
       <li>All verification happens client-side in your browser</li>
@@ -457,7 +457,7 @@
     </ul>
 
     <h2>Children's Privacy</h2>
-    <p>Thurin has no age-gated content. The attestation flow (Signet) requires an Ethereum wallet to transact.</p>
+    <p>Thurin has no age-gated content. The attestation flow requires an Ethereum wallet to transact.</p>
 
     <h2>Changes to This Policy</h2>
     <p>We may update this policy as we ship new products and features. Changes will be posted on this page with an updated date.</p>
