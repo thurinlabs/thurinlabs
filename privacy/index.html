@@ -413,9 +413,9 @@
 
     <h3>Attestation flow (thurin.id/attest)</h3>
     <ol>
-      <li>You connect your Ethereum wallet and sign your PGP fingerprint</li>
+      <li>You connect your Ethereum wallet and enter your PGP fingerprint</li>
       <li>You clearsign a claim message with your PGP key</li>
-      <li>The dual-signed identity claim is published to the PGPRegistry smart contract</li>
+      <li>The identity claim is published to the PGPRegistry smart contract from your connected wallet, which is what binds the address to the key</li>
       <li>No backend is involved. The transaction goes directly from your wallet to the chain.</li>
     </ol>
 
