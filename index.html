@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thurin Labs — Cryptographic Identity Infrastructure</title>
-  <meta name="description" content="Thurin Labs builds open, decentralized identity infrastructure. Link your keys, addresses, and accounts into one identity you can prove. No backends, no data collection.">
+  <title>Thurin Labs — Prove more. Reveal less.</title>
+  <meta name="description" content="Thurin Labs builds tools that let you prove who you are online without handing your life to a company. Open, private, and yours to keep.">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="canonical" href="https://thurinlabs.id">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://thurinlabs.id">
-  <meta property="og:title" content="Thurin Labs — Cryptographic Identity Infrastructure">
-  <meta property="og:description" content="Thurin Labs builds open, decentralized identity infrastructure. Link your keys, addresses, and accounts into one identity you can prove. No backends, no data collection.">
+  <meta property="og:title" content="Thurin Labs — Prove more. Reveal less.">
+  <meta property="og:description" content="Thurin Labs builds tools that let you prove who you are online without handing your life to a company. Open, private, and yours to keep.">
   <meta property="og:image" content="https://thurinlabs.id/images/og-image.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@thurinlabs">
-  <meta name="twitter:title" content="Thurin Labs — Cryptographic Identity Infrastructure">
-  <meta name="twitter:description" content="Open, decentralized identity infrastructure. Link your keys, addresses, and accounts into one identity you can prove. No backends, no data collection.">
+  <meta name="twitter:title" content="Thurin Labs — Prove more. Reveal less.">
+  <meta name="twitter:description" content="Thurin Labs builds tools that let you prove who you are online without handing your life to a company. Open, private, and yours to keep.">
   <meta name="twitter:image" content="https://thurinlabs.id/images/og-image.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -209,56 +209,236 @@
 
     .theme-select:focus { border-color: var(--color-primary); }
 
+    /* ── Motion ── */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .rise { animation: rise 0.7s cubic-bezier(.2,.7,.2,1) both; }
+    .rise-2 { animation-delay: 0.3s; }
+    .rise-3 { animation-delay: 0.6s; }
+    .rise-4 { animation-delay: 0.8s; }
+    @media (prefers-reduced-motion: reduce) {
+      .rise { animation: none; }
+    }
+
+    /* ── Sections ── */
+    .section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem;
+      border-top: 1px solid var(--color-border);
+      position: relative;
+    }
+
+    .section-label {
+      display: block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 1.25rem;
+    }
+
     /* ── Hero ── */
     .hero {
       text-align: center;
       padding: 5rem 2rem 3.5rem;
       max-width: 960px;
       margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      position: relative;
     }
 
     .hero h1 {
       font-family: 'Cinzel', serif;
-      font-size: 3.2rem;
+      font-size: 3.6rem;
       font-weight: 700;
       color: var(--color-heading);
       letter-spacing: 0.04em;
-      line-height: 1.2;
-      margin-bottom: 1.25rem;
+      line-height: 1.1;
     }
+
+    .hero h1.hero-line-2 { color: var(--color-text); }
 
     .hero p {
       font-size: 1.1rem;
       color: var(--color-text-muted);
-      max-width: 600px;
-      margin: 0 auto;
+      max-width: 620px;
+      margin: 1.25rem auto 0;
       line-height: 1.8;
     }
 
-    .hero p + p {
-      margin-top: 1rem;
+    /* ── Buttons ── */
+    .btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.7rem 1.6rem;
+      border: 1px solid var(--color-primary-dim);
+      color: var(--color-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      white-space: nowrap;
     }
 
-    /* ── App Cards ── */
+    .btn:hover {
+      background: var(--color-primary-glow);
+      border-color: var(--color-primary);
+      color: var(--color-primary-light);
+      box-shadow: 0 0 24px var(--color-primary-glow);
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-btn-primary-text);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-light);
+      border-color: var(--color-primary-light);
+      color: var(--color-btn-primary-text);
+    }
+
+    /* ── Flagship ── */
+    .flagship {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .flagship-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .flagship-wordmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .flagship-text p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--color-text);
+    }
+
+    .flagship-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .flagship-card {
+      flex-shrink: 0;
+      width: 340px;
+    }
+
+    /* ── Beliefs ── */
+    .beliefs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .belief {
+      padding: 1.5rem 1.25rem;
+      border-right: 1px solid var(--color-border);
+      text-align: center;
+    }
+
+    .belief:first-child { padding-left: 0; }
+    .belief:last-child { padding-right: 0; border-right: none; }
+
+    .belief h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-heading);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+    }
+
+    .belief p {
+      color: var(--color-text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .beliefs-line {
+      font-style: italic;
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      margin-top: 1.5rem;
+    }
+
+    /* ── About ── */
+    .about {
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .about p {
+      font-size: 1.15rem;
+      line-height: 1.75;
+      font-style: italic;
+    }
+
+    .about-who {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .about-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-heading);
+      letter-spacing: 0.04em;
+    }
+
+    .about-role {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Other work ── */
     .apps {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 2rem 5rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
     }
 
     .app-card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: 12px;
-      padding: 2rem 1.75rem;
+      padding: 1.6rem 1.5rem;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 1rem;
+      gap: 0.75rem;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
@@ -267,28 +447,12 @@
       box-shadow: 0 0 24px var(--color-primary-glow);
     }
 
-    .app-card-icon { flex-shrink: 0; }
-
     .app-card h2 {
       font-family: 'Cinzel', serif;
-      font-size: 1.3rem;
+      font-size: 1.15rem;
       font-weight: 600;
       color: var(--color-heading);
       letter-spacing: 0.04em;
-    }
-
-    .badge-demo {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.6rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      color: var(--color-secondary);
-      border: 1px solid var(--color-secondary);
-      border-radius: 3px;
-      padding: 0.15em 0.4em;
-      vertical-align: middle;
-      position: relative;
-      top: -0.1em;
     }
 
     .app-card p {
@@ -298,161 +462,48 @@
       flex: 1;
     }
 
-    .app-card-link {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--color-primary);
-      letter-spacing: 0.03em;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      transition: color 0.2s, gap 0.2s;
-    }
-
-    .app-card-link:hover {
-      color: var(--color-primary-light);
-      gap: 0.55rem;
-    }
-
+    .app-card-link,
     .app-card-soon {
       font-family: 'Share Tech Mono', monospace;
       font-size: 0.85rem;
-      color: var(--color-text-muted);
       letter-spacing: 0.03em;
     }
 
-    /* ── App Detail Sections ── */
-    .app-detail {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 3.5rem 2rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
+    .app-card-link { color: var(--color-primary); transition: color 0.2s; }
+    .app-card-link:hover { color: var(--color-primary-light); }
+    .app-card-soon { color: var(--color-text-muted); }
 
-    .app-detail {
-      border-top: 1px solid var(--color-border);
-    }
-
-    .app-detail.reverse .app-detail-info { order: 2; }
-    .app-detail.reverse .app-detail-steps { order: 1; }
-
-    .app-detail-info h3 {
-      font-family: 'Cinzel', serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--color-heading);
-      letter-spacing: 0.04em;
-      margin-bottom: 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .app-detail-info h3 a {
-      color: var(--color-heading);
-      transition: color 0.2s;
-    }
-
-    .app-detail-info h3 a:hover {
-      color: var(--color-primary);
-    }
-
-    .app-detail-info p {
-      color: var(--color-text-muted);
+    /* ── Support ── */
+    .support p {
       font-size: 0.95rem;
-      line-height: 1.7;
-      margin-bottom: 1.25rem;
-    }
-
-    .app-detail-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .app-detail-features li {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.82rem;
+      font-style: italic;
       color: var(--color-text-muted);
-      padding-left: 1.2em;
-      position: relative;
     }
 
-    .app-detail-features li::before {
-      content: '\203A';
-      position: absolute;
-      left: 0;
+    .support .ens {
+      font-family: 'Share Tech Mono', monospace;
+      font-style: normal;
       color: var(--color-secondary);
+      border-bottom: 1px solid var(--color-secondary);
     }
 
-    .app-detail-steps-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--color-text-muted);
-      margin-top: 1rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .app-detail-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .app-detail-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-    }
-
-    .step-num {
-      flex-shrink: 0;
-      width: 1.6rem;
-      height: 1.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--color-primary);
-      color: var(--color-btn-primary-text);
-      border-radius: 50%;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .step-text {
-      font-size: 0.9rem;
-      color: var(--color-text);
-      line-height: 1.5;
-      padding-top: 0.1rem;
-    }
-
-    .step-text strong {
-      display: block;
-      font-size: 0.85rem;
-      margin-bottom: 0.15rem;
-    }
-
-    .step-text span {
-      color: var(--color-text-muted);
-      font-size: 0.82rem;
-    }
+    .support .ens:hover { color: var(--color-primary-light); border-color: var(--color-primary-light); }
 
     @media (max-width: 768px) {
-      .app-detail {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        padding: 2.5rem 1.25rem;
-      }
+      .section { padding: 2.25rem 1.25rem; }
+      .hero { padding: 3.5rem 1.5rem 2.5rem; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero p { font-size: 1.05rem; }
+      .flagship { flex-direction: column; align-items: stretch; gap: 1.5rem; }
+      .flagship-card { width: 100%; }
+      .beliefs { grid-template-columns: 1fr; }
+      .belief { padding: 1.25rem 0; border-right: none; border-bottom: 1px solid var(--color-border); }
+      .belief:last-child { border-bottom: none; }
+      .apps { grid-template-columns: 1fr; }
+    }
 
-      .app-detail.reverse .app-detail-info { order: 1; }
-      .app-detail.reverse .app-detail-steps { order: 2; }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.9rem; }
     }
 
     /* ── Footer ── */
@@ -580,51 +631,95 @@
 
   <!-- Hero -->
   <section class="hero">
-    <h1>Prove more. <br class="mobile-break">Reveal less.</h1>
-    <p>Identity on the internet is broken. To prove who you are, you have to give up who you are. We think cryptography can fix that.</p>
-    <p>Thurin builds open, decentralized infrastructure for a world where identity is self-sovereign, privacy is the default, and trust is verified by math. No backends. No intermediaries. No data collection. Just public-key cryptography, on-chain claims, and you. Link your keys, your addresses, and your accounts into one identity you can prove and anyone can verify.</p>
+    <h1 class="rise">Prove more.</h1>
+    <h1 class="hero-line-2 rise rise-2">Reveal less.</h1>
+    <p class="rise rise-3">Thurin Labs builds tools that let you prove who you are online without handing your life to a company. Open, private, and yours to keep.</p>
   </section>
 
-  <!-- Products -->
-  <section class="apps">
-    <div class="app-card">
-      <div class="app-card-icon">
-        <svg viewBox="20 20 76 76" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
-          <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
-          <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
-          <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
-          <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
-        </svg>
+  <!-- Flagship -->
+  <section class="section rise rise-4">
+    <span class="section-label">What we build</span>
+    <div class="flagship">
+      <div class="flagship-text">
+        <div class="flagship-wordmark">
+          <svg viewBox="20 20 76 76" xmlns="http://www.w3.org/2000/svg" width="40" height="40" aria-hidden="true">
+            <path d="M25 80 Q25 25 50 25 Q75 25 75 50" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+            <path d="M33 75 Q33 35 50 35 Q67 35 67 52" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
+            <path d="M41 70 Q41 45 50 45 Q59 45 59 55" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+            <path d="M50 65 L50 53" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="72" cy="72" r="12" fill="none" stroke="#c9a227" stroke-width="3.5"/>
+            <line x1="81" y1="81" x2="92" y2="92" stroke="#c9a227" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+          <span>Thurin<span class="header-wordmark-accent">.id</span></span>
+        </div>
+        <p>Look up an online identity and see what is really behind it. Prove your own in a few minutes. Anyone can check any claim, and none of it depends on us.</p>
+        <div class="flagship-actions">
+          <a href="https://thurin.id" class="btn btn-primary app-link" target="_blank" rel="noopener noreferrer">Visit Thurin.id &rarr;</a>
+          <a href="https://docs.thurin.id" class="btn" target="_blank" rel="noopener noreferrer">Read the docs</a>
+        </div>
       </div>
-      <h2>Thurin<span class="header-wordmark-accent">.id</span></h2>
-      <p>Look up any Ethereum identity, bind your address to your PGP key on-chain, verify any claim. The full Thurin stack at thurin.id.</p>
-      <a href="https://thurin.id" class="app-card-link app-link" target="_blank" rel="noopener noreferrer">Visit Thurin.id &rarr;</a>
-    </div>
-    <div class="app-card">
-      <div class="app-card-icon">
-        <svg viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
-          <rect x="22" y="38" width="32" height="26" rx="4" fill="none" stroke="#7c9a3e" stroke-width="4"/>
-          <path d="M29 38 V30 a9 9 0 0 1 18 0 V38" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="38" cy="48" r="3.5" fill="#c9a227"/>
-          <path d="M38 51 L38 56" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
-        </svg>
+      <div class="flagship-card">
+        <div data-thurin-card="thurinlabs.eth" data-theme="thurin"></div>
       </div>
-      <h2>Mathom</h2>
-      <p>An air-gapped machine for PGP key custody, subkey provisioning, and release signing. A vault you visit, not a computer you use.</p>
-      <span class="app-card-soon">Coming soon</span>
     </div>
-    <div class="app-card">
-      <div class="app-card-icon">
-        <svg viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
-          <circle cx="34" cy="34" r="16" fill="none" stroke="#7c9a3e" stroke-width="4"/>
-          <path d="M46 46 L60 60" fill="none" stroke="#7c9a3e" stroke-width="4" stroke-linecap="round"/>
-          <path d="M27 34 l5 5 l10 -12" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+  </section>
+
+  <!-- Beliefs -->
+  <section class="section">
+    <span class="section-label">What we believe</span>
+    <div class="beliefs">
+      <div class="belief">
+        <h3>No one can switch it off.</h3>
+        <p>Identities live on Ethereum, a public record no company controls. There is no account to suspend and no server to seize.</p>
       </div>
-      <h2>Noir Audit Skill</h2>
-      <p>A Claude Code skill that runs a structured security audit on Noir zero-knowledge circuits. Underconstraints, nullifier soundness, privacy leaks.</p>
-      <a href="https://github.com/thurinlabs/noir-audit-skill" class="app-card-link" target="_blank" rel="noopener noreferrer">View on GitHub &rarr;</a>
+      <div class="belief">
+        <h3>Everything is open.</h3>
+        <p>Every line of code is public. Anyone can read it, run it, or fork it.</p>
+      </div>
+      <div class="belief">
+        <h3>Private by default.</h3>
+        <p>Nothing about you goes public unless you choose it. No email, no tracking, no analytics.</p>
+      </div>
+      <div class="belief">
+        <h3>Nothing taken on faith.</h3>
+        <p>You don&rsquo;t have to trust us. Anyone can check any claim for themselves, and there is no switch we could flip to change the answer.</p>
+      </div>
     </div>
+    <p class="beliefs-line">No token. No fees. No backend. That&rsquo;s not a promise, it&rsquo;s how it&rsquo;s built.</p>
+  </section>
+
+  <!-- About -->
+  <section class="section">
+    <span class="section-label">About</span>
+    <div class="about">
+      <p>&ldquo;PGP gave regular people real cryptography, and then nobody built the rest. No place to find a key, no way to know it was yours, nowhere for it to live.<br>Ethereum is public, permanent, and nobody owns it. Finally, ground to grow in.<br>Thurin is the piece in between. Your key, with a home.&rdquo;</p>
+      <div class="about-who">
+        <span class="about-name">Ben Woodall</span>
+        <span class="about-role">Founder, Thurin Labs &middot; <a href="https://thurin.id/ens/bendoubleu.eth" class="thurin-link" target="_blank" rel="noopener noreferrer">bendoubleu.eth</a></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other work -->
+  <section class="section">
+    <span class="section-label">Other work</span>
+    <div class="apps">
+      <div class="app-card">
+        <h2>Mathom</h2>
+        <p>A computer that never touches the internet, for keeping your most important key safe.</p>
+        <span class="app-card-soon">Coming soon</span>
+      </div>
+      <div class="app-card">
+        <h2>Noir Audit Skill</h2>
+        <p>A review checklist for zero-knowledge circuits, the privacy math behind a lot of new cryptography. Open source.</p>
+        <a href="https://github.com/thurinlabs/noir-audit-skill" class="app-card-link" target="_blank" rel="noopener noreferrer">View on GitHub &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Support -->
+  <section class="section support">
+    <p>Thurin is independent, and stays that way when the people who use it chip in. Send something to <a href="https://thurin.id/ens/thurinlabs.eth" class="ens thurin-link" target="_blank" rel="noopener noreferrer">thurinlabs.eth</a>. Any wallet, by name.</p>
   </section>
 
   </main>
@@ -635,6 +730,7 @@
       <div class="footer-col">
         <span class="footer-col-label">Home</span>
         <a href="https://thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Thurin.id</a>
+        <a href="https://docs.thurin.id/#/roadmap" target="_blank" rel="noopener noreferrer">Roadmap</a>
         <a href="privacy/" class="privacy-link">Privacy</a>
       </div>
       <div class="footer-col">
@@ -661,30 +757,38 @@
       var select = document.getElementById('themeToggle');
       var current = document.documentElement.getAttribute('data-theme') || 'thurin';
       select.value = current;
+      var card = document.querySelector('[data-thurin-card]');
+      if (card) card.setAttribute('data-theme', current);
 
       select.addEventListener('change', function() {
         var theme = select.value;
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('thurin-landing-theme', theme);
+        if (card) card.setAttribute('data-theme', theme);
       });
     })();
 
-    // Domain-aware link rewriting for ENS gateway
+    // Domain-aware link rewriting for ENS. Served from thurinlabs.eth (natively) or
+    // through a gateway (thurinlabs.eth.limo, .eth.link, ...), every Thurin link keeps
+    // the same suffix so a visitor who came in without DNS is never handed back to it.
     (function() {
-      var host = window.location.host;
-      var isEthLimo = host.endsWith('thurinlabs.eth.limo');
-      var isEth = host.endsWith('thurinlabs.eth');
+      var host = window.location.hostname.toLowerCase();
+      var m = host.match(/thurinlabs\.eth(\.[a-z0-9.-]+)?$/);
+      if (!m) return;
 
-      if (!isEthLimo && !isEth) return;
+      var suffix = 'thurinlabs.eth' + (m[1] || '');
 
-      var suffix = isEth ? 'thurinlabs.eth' : 'thurinlabs.eth.limo';
-
-      // Rewrite Thurin product link to its ENS equivalent
-      document.querySelectorAll('.app-link').forEach(function(a) {
-        if (a.getAttribute('href') === 'https://thurin.id') {
-          a.setAttribute('href', isEth ? 'https://thurin.eth' : 'https://thurin.eth.limo');
+      // Rewrite Thurin product links to the app's ENS name
+      document.querySelectorAll('.app-link, .thurin-link').forEach(function(a) {
+        var href = a.getAttribute('href') || '';
+        if (href === 'https://thurin.id' || href.indexOf('https://thurin.id/') === 0) {
+          a.setAttribute('href', 'https://id.' + suffix + href.slice('https://thurin.id'.length));
         }
       });
+
+      // The live card's "View on Thurin" link follows too
+      var card = document.querySelector('[data-thurin-card]');
+      if (card) card.setAttribute('data-base-url', 'https://id.' + suffix);
 
       // Rewrite ENS link
       document.querySelectorAll('.ens-link').forEach(function(a) {
@@ -697,6 +801,9 @@
       });
     })();
   </script>
+
+  <!-- Live identity card (identity-kit embed; reads the registry from the browser, no Thurin server) -->
+  <script src="https://cdn.jsdelivr.net/npm/@thurinlabs/identity-kit@1/dist/embed.global.js"></script>
 
 </body>
 </html>
