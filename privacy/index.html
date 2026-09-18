@@ -354,126 +354,122 @@
 
   <main class="content">
     <h1>Privacy Policy</h1>
-    <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: September 2026</p>
+    <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: 18 September 2026</p>
 
     <h2>Overview</h2>
-    <p>Thurin Labs LLC ("Thurin Labs," "we," "our," or "us") builds <strong>Thurin</strong> (<a href="https://thurin.id">thurin.id</a>), decentralized identity infrastructure for Ethereum. Thurin includes an identity explorer and an on-chain attestation flow (thurin.id/attest). This policy covers Thurin.</p>
+    <p>Thurin Labs LLC ("Thurin Labs," "we," "our," or "us") builds <strong>Thurin.id</strong> (<a href="https://thurin.id">thurin.id</a>), identity infrastructure for Ethereum. Thurin.id is an identity explorer and an attestation flow (thurin.id/attest) that binds an Ethereum address to a PGP key and to accounts on other platforms. This policy covers thurin.id, thurinlabs.id, docs.thurin.id, and the copies of those sites served under our ENS names.</p>
 
     <div class="highlight-box">
-      <p>Thurin products are designed to be fully decentralized and non-custodial. We do not operate backends or databases. Your data stays on your device, on the public blockchain, or on public keyservers you already use.</p>
+      <p>Thurin has no accounts, no database of users, and no server that reads or verifies anything on your behalf. Everything you publish goes on the Ethereum blockchain from your own wallet, and every check runs in your own browser. The only Thurin systems that see any traffic at all are ordinary web servers, described below.</p>
     </div>
 
-    <h2>What We Collect</h2>
-
-    <h3>On-chain data (public, permanent)</h3>
+    <h2>What Goes On-Chain</h2>
+    <p>Publishing a claim writes the following to the PGPRegistry contract on Ethereum. It is <strong>public and permanent</strong>: anyone can read it from any Ethereum node, forever. A claim can be revoked, which marks it inactive, but nothing on a public blockchain can be deleted, by us or by anyone.</p>
     <table>
       <thead>
         <tr>
           <th>Data</th>
-          <th>Product</th>
-          <th>Purpose</th>
+          <th>Where it comes from</th>
+          <th>Notes</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Ethereum address</td>
-          <td>Attestation flow</td>
-          <td>Binds identity claims to your wallet</td>
+          <td>Your Ethereum address</td>
+          <td>The wallet that publishes the claim</td>
+          <td>The claim is published from the address it names</td>
         </tr>
         <tr>
-          <td>PGP fingerprint</td>
-          <td>Attestation flow</td>
-          <td>Links your public key to your address</td>
+          <td>Your PGP public key</td>
+          <td>Pasted by you</td>
+          <td>Includes the name(s) on the key. By default Thurin leaves out any name that contains an email address; you can choose to include it, and that choice cannot be undone for that claim</td>
         </tr>
         <tr>
-          <td>Claim timestamp</td>
-          <td>Attestation flow</td>
-          <td>Verification timing</td>
+          <td>Proof links</td>
+          <td>Notations on your key</td>
+          <td>URLs of accounts you have chosen to link (for example a GitHub repository, a domain, a Mastodon profile). Adding a proof is your choice; each one publicly ties that account to this identity</td>
+        </tr>
+        <tr>
+          <td>A signed statement</td>
+          <td>Made by you with your PGP key</td>
+          <td>The text "I control the Ethereum address: …", signed. It proves the key holder chose this address</td>
+        </tr>
+        <tr>
+          <td>Timestamps</td>
+          <td>The blockchain</td>
+          <td>When the claim was published, updated, or revoked</td>
         </tr>
       </tbody>
     </table>
+    <p>Before you publish, the attestation page shows you exactly which names and proofs are about to go on-chain. Nothing about you goes public unless you put it there.</p>
 
-    <h3>Data processed client-side only</h3>
+    <h3>Processed only in your browser</h3>
     <ul>
-      <li><strong>Attestation flow:</strong> Your PGP private key is used locally to clearsign a claim message. The private key never leaves your machine.</li>
-      <li><strong>Explorer:</strong> Searches and signature verifications happen in your browser via openpgp.js. Public keys are fetched from keys.openpgp.org. No data is sent to Thurin servers.</li>
+      <li><strong>Attesting:</strong> your PGP private key is used on your own machine, in your own tools, to sign the statement. The private key never leaves your machine, and no Thurin page ever asks for it.</li>
+      <li><strong>Looking up an identity:</strong> your browser reads the claim from the blockchain, checks the signature against the stored key, and checks each proof against the platform it points at. The results are computed on your device and not reported anywhere.</li>
     </ul>
 
-    <h3>Data we do NOT collect</h3>
+    <h3>What we do not collect</h3>
     <ul>
-      <li>Names, addresses, dates of birth</li>
-      <li>Driver's license or ID numbers</li>
-      <li>Photos, biometrics, or facial data</li>
+      <li>Accounts, logins, or passwords: there are none</li>
       <li>Private keys (PGP or Ethereum)</li>
+      <li>Names, dates of birth, government identifiers, photos, or biometrics</li>
       <li>Email content or contacts</li>
-      <li>Analytics, telemetry, or usage data</li>
+      <li>Analytics, telemetry, or usage data: we run none</li>
     </ul>
 
-    <h2>How Thurin Works</h2>
+    <h2>Web Servers and Logs</h2>
+    <p>Our sites are static pages served through a web server (nginx) we operate, in front of copies pinned to IPFS. Like any web server, it records standard access logs: the IP address making the request, the page requested, the time, and the browser's user-agent string. These logs are used only to keep the sites running and are rotated and deleted on a short schedule. They are not analysed, sold, or shared.</p>
+    <p>One small service of ours does more than serve files: the <strong>share-card service</strong> renders link previews and identity-card images when a social platform or another site requests one. It reads the same public on-chain data your browser would, caches the result for about an hour, and stores nothing else. It sees the requesting platform's request, not yours.</p>
+    <p>Our ENS-hosted copies (thurinlabs.eth, id.thurinlabs.eth) are served by third-party IPFS gateways such as eth.limo, which keep their own logs under their own policies.</p>
 
-    <h3>Attestation flow (thurin.id/attest)</h3>
-    <ol>
-      <li>You connect your Ethereum wallet and enter your PGP fingerprint</li>
-      <li>You clearsign a claim message with your PGP key</li>
-      <li>The identity claim is published to the PGPRegistry smart contract from your connected wallet, which is what binds the address to the key</li>
-      <li>No backend is involved. The transaction goes directly from your wallet to the chain.</li>
-    </ol>
-
-    <h3>Identity explorer</h3>
-    <ol>
-      <li>You search by ETH address, ENS name, or PGP fingerprint</li>
-      <li>Thurin reads identity claim data from the public blockchain</li>
-      <li>Public keys are fetched from keys.openpgp.org and email ownership is verified via OpenPGP</li>
-      <li>All verification happens client-side in your browser</li>
-    </ol>
-
-    <h2>Third Parties</h2>
-    <p>We do not share data with third parties for marketing or advertising.</p>
+    <h2>Third Parties Your Browser Talks To</h2>
+    <p>Thurin sends nothing to third parties. Your browser, however, contacts several services directly in order to verify an identity, and each of them sees that request in the ordinary way:</p>
     <ul>
-      <li><strong>Blockchain networks:</strong> Ethereum stores verification records and identity claims on-chain</li>
-      <li><strong>Keyservers:</strong> Thurin fetches public keys from keys.openpgp.org (a public service operated by the OpenPGP community)</li>
-      <li><strong>ENS:</strong> Thurin resolves ENS names to Ethereum addresses</li>
-      <li>No third-party analytics or tracking services are used</li>
+      <li><strong>An Ethereum node</strong> to read claims. thurin.id uses an Alchemy endpoint; the library and embed default to a public node. Any node works.</li>
+      <li><strong>ENS</strong>, via the same node, to resolve names, and the ENS avatar service for profile images.</li>
+      <li><strong>The platforms behind proofs:</strong> GitHub's API, Codeberg's API, Cloudflare's DNS-over-HTTPS resolver, and the Mastodon instance named in a proof. Farcaster proofs are checked through Neynar's API.</li>
+      <li><strong>EFP (Ethereum Follow Protocol)</strong> for follower counts on identity pages.</li>
+      <li><strong>Your wallet.</strong> If you connect over WalletConnect by QR code, the pairing goes through WalletConnect's relay.</li>
+    </ul>
+    <p>We use no third-party analytics, advertising, or tracking services, and no data is shared with anyone for marketing.</p>
+
+    <h2>Cookies and Browser Storage</h2>
+    <p>Our sites set no cookies. Your browser keeps two things locally: your theme preference, and, on thurin.id, the wallet library's record of a connected wallet so it can reconnect. Both stay on your device and can be cleared at any time.</p>
+
+    <h2>Your Choices and Rights</h2>
+    <ul>
+      <li><strong>What is public is your choice.</strong> You decide which names, which email (if any), and which proofs go on-chain, and the page shows you before you publish.</li>
+      <li><strong>Revocation.</strong> You can revoke a claim at any time from thurin.id/attest. Revoked claims are marked inactive and are no longer treated as your identity; the record of them remains on the blockchain.</li>
+      <li><strong>Updating.</strong> You can replace the key stored on a claim, for example to remove a proof, without a new claim.</li>
+      <li><strong>Deletion.</strong> Blockchain data cannot be deleted by us or by anyone. This is a property of public blockchains, and it is why the attestation flow asks you to choose carefully.</li>
+      <li><strong>Access.</strong> Everything Thurin knows about an identity is on the identity page, readable by anyone, including you. There is nothing further to request.</li>
     </ul>
 
-    <h2>Cookies and Tracking</h2>
-    <p>Our websites do not use cookies or tracking technologies. The only value stored in your browser is your theme preference (localStorage).</p>
-
-    <h2>Your Rights</h2>
-    <p>You have the right to:</p>
+    <h2>Security</h2>
     <ul>
-      <li>Know what data exists about you (limited to public on-chain records and public keyserver data)</li>
-      <li>Request information about our data practices</li>
-      <li>Contact us with privacy concerns</li>
-    </ul>
-    <p>Because Thurin products are decentralized, on-chain data cannot be deleted by us or anyone else. This is a feature of public blockchains, not a limitation of our policy.</p>
-
-    <h2>Data Security</h2>
-    <ul>
-      <li>All verification and signing happens client-side</li>
-      <li>No personal data is transmitted to or stored on Thurin servers (we don't operate any)</li>
-      <li>On-chain data is public but contains no personally identifiable information</li>
-      <li>Smart contracts are open source and verifiable</li>
+      <li>All signing and verification happens on your device</li>
+      <li>The PGPRegistry contract has no owner, no administrator, no fees, and no upgrade mechanism; its source is published and verified</li>
+      <li>The verification library (identity-kit), the sites, and the contract are open source</li>
+      <li>No Thurin system holds any secret of yours</li>
     </ul>
 
     <h2>Children's Privacy</h2>
-    <p>Thurin has no age-gated content. The attestation flow requires an Ethereum wallet to transact.</p>
+    <p>Thurin is not directed at children. Publishing a claim requires an Ethereum wallet and a transaction fee.</p>
 
     <h2>Changes to This Policy</h2>
-    <p>We may update this policy as we ship new products and features. Changes will be posted on this page with an updated date.</p>
+    <p>We update this page when the products change. Changes are posted here with a new date.</p>
 
     <h2>Contact</h2>
     <ul>
-      <li>Email: <a href="mailto:privacy@thurin.id">privacy@thurin.id</a></li>
+      <li>Email: <a href="mailto:hello@thurin.id">hello@thurin.id</a></li>
       <li>Website: <a href="https://thurin.id">thurin.id</a></li>
     </ul>
 
     <h2>Legal Basis (GDPR)</h2>
-    <p>For users in the European Economic Area, our legal basis for processing is legitimate interest in providing privacy-preserving identity infrastructure. By design, no personal data is processed by Thurin systems. Zero-knowledge proofs and client-side verification ensure data minimization at the protocol level.</p>
+    <p>For users in the European Economic Area: the only processing carried out by Thurin Labs systems is the web-server logging described above, on the basis of our legitimate interest in operating the sites. Everything else, including every claim and proof, is published by you, from your own wallet, to a public blockchain, by your own choice, and is processed on your device. Thurin Labs is not the controller of data you choose to publish on a public blockchain.</p>
 
-    <hr>
-
-    <p><em>Thurin is committed to building identity infrastructure that respects privacy by default. We don't collect your data because we never need to.</em></p>
+    <p><em>We do not collect your data because the design never needs it. What you publish is yours, public, and permanent, and the page tells you so before you do.</em></p>
   </main>
 
   <footer class="footer">
