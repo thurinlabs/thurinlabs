@@ -340,6 +340,12 @@
       color: var(--color-text);
     }
 
+    .flagship-also {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--color-text-muted, #a8a598);
+    }
+    .flagship-also code { font-family: var(--mono, monospace); font-size: 0.85em; }
     .flagship-actions {
       display: flex;
       gap: 0.75rem;
@@ -652,11 +658,12 @@
           </svg>
           <span>Thurin<span class="header-wordmark-accent">.id</span></span>
         </div>
-        <p>Look up an online identity and see what is really behind it. Prove your own in a few minutes. Anyone can check any claim, and none of it depends on us.</p>
+        <p>Your PGP key, bound to your Ethereum address. Look up any name and see the claim and the proofs behind it, or prove your own in a few minutes, from the page or a terminal. Anyone can check it, and none of it depends on us.</p>
         <div class="flagship-actions">
           <a href="https://thurin.id" class="btn btn-primary app-link" target="_blank" rel="noopener noreferrer">Visit Thurin.id &rarr;</a>
           <a href="https://docs.thurin.id" class="btn" target="_blank" rel="noopener noreferrer">Read the docs</a>
         </div>
+        <p class="flagship-also">Also: <a href="https://keys.thurin.id" class="ens" target="_blank" rel="noopener noreferrer">keys.thurin.id</a>, a PGP keyserver whose database is Ethereum &middot; <code>npx @thurinlabs/thurin</code></p>
       </div>
       <div class="flagship-card">
         <div data-thurin-card="thurinlabs.eth" data-theme="thurin" data-rpc-url="https://ethereum.publicnode.com"></div>
@@ -719,7 +726,7 @@
 
   <!-- Support -->
   <section class="section support">
-    <p>Thurin is independent, and stays that way when the people who use it chip in. Send something to <a href="https://thurin.id/ens/thurinlabs.eth" class="ens thurin-link" target="_blank" rel="noopener noreferrer">thurinlabs.eth</a>. Any wallet, by name.</p>
+    <p>Thurin is independent, and stays that way when the people who use it chip in. Send something to <a href="https://thurin.id/ens/thurinlabs.eth" class="ens thurin-link" target="_blank" rel="noopener noreferrer">thurinlabs.eth</a>, any wallet, by name. Or privately: its Railgun address is <a href="https://thurin.id/ens/thurinlabs.eth/records" class="thurin-link" target="_blank" rel="noopener noreferrer">on its claim</a>.</p>
   </section>
 
   </main>
