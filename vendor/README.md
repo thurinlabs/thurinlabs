@@ -5,7 +5,7 @@ the page loads no third-party script (the live card at thurinlabs.id).
 
 | file | from | sha256 |
 |---|---|---|
-| identity-kit-embed.js | `@thurinlabs/identity-kit@1.3.5` (npm), `dist/embed.global.js` | `0bd2522188eddd51d6b7f7ca1a59c98d296dbe664bf5304c37b20913851710cd` |
+| identity-kit-embed.js | `@thurinlabs/identity-kit@1.3.6` (npm), `dist/embed.global.js` | `018a986e6a53fff45ac9e39cdbeb7e522e69e011bfc4dd69acbd66a1cd7c2919` |
 
 To update after a kit release, take the file from the published npm tarball and check it:
 

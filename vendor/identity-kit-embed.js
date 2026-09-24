@@ -30411,6 +30411,9 @@ ${prettyStateOverride(stateOverride)}`;
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(IdentityKitContext.Provider, { value: config, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(WagmiDetector, { rpcUrl, network, children }) });
   }
 
+  // src/components/ThurinCard/ThurinCard.tsx
+  var import_react9 = __toESM(require_react(), 1);
+
   // src/core/identityError.ts
   function needsRpcProbe(s2) {
     return s2.ensEmpty || s2.ensFailed || s2.claimsFailed;
@@ -31785,7 +31788,8 @@ ${prettyStateOverride(stateOverride)}`;
   }
 
   // src/core/avatar.ts
-  var IPFS_GATEWAY = "https://ipfs.io/ipfs/";
+  var IPFS_GATEWAYS = ["https://ipfs.filebase.io/ipfs/", "https://gateway.pinata.cloud/ipfs/"];
+  var IPFS_GATEWAY = IPFS_GATEWAYS[0];
   var ARWEAVE_GATEWAY = "https://arweave.net/";
   function avatarUrl(uri) {
     if (typeof uri !== "string") return null;
@@ -31800,9 +31804,14 @@ ${prettyStateOverride(stateOverride)}`;
     if (m2) return IPFS_GATEWAY + m2[1];
     return null;
   }
+  function avatarFallbacks(url) {
+    if (!url || !url.startsWith(IPFS_GATEWAYS[0])) return [];
+    const path = url.slice(IPFS_GATEWAYS[0].length);
+    return IPFS_GATEWAYS.slice(1).map((g2) => g2 + path);
+  }
   function parseNftAvatar(raw) {
-    const m2 = typeof raw === "string" && raw.trim().match(/^eip155:(\d+)\/(erc721|erc1155):(0x[0-9a-fA-F]{40})\/(\d+)$/);
-    return m2 ? { chainId: Number(m2[1]), standard: m2[2], contract: m2[3], tokenId: BigInt(m2[4]) } : null;
+    const m2 = typeof raw === "string" && raw.trim().match(/^eip155:(\d+)\/(erc721|erc1155):(0x[0-9a-fA-F]{40})\/(\d+)$/i);
+    return m2 ? { chainId: Number(m2[1]), standard: m2[2].toLowerCase(), contract: m2[3], tokenId: BigInt(m2[4]) } : null;
   }
   var NFT_AVATAR_ABI = [
     { type: "function", name: "tokenURI", stateMutability: "view", inputs: [{ type: "uint256" }], outputs: [{ type: "string" }] },
@@ -31816,9 +31825,17 @@ ${prettyStateOverride(stateOverride)}`;
     else {
       const url = uri.startsWith("data:") ? null : avatarUrl(uri);
       if (!url) return null;
-      const res = await fetchFn(url);
-      if (!res.ok) return null;
-      meta = await res.json();
+      for (const candidate of [url, ...avatarFallbacks(url)]) {
+        try {
+          const res = await fetchFn(candidate);
+          if (res.ok) {
+            meta = await res.json();
+            break;
+          }
+        } catch {
+        }
+      }
+      if (!meta) return null;
     }
     return avatarUrl(meta?.image ?? meta?.image_url);
   }
@@ -31936,6 +31953,14 @@ ${prettyStateOverride(stateOverride)}`;
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("path", { d: "M50 65 L50 53", fill: "none", stroke: "#c9a227", strokeWidth: "4", strokeLinecap: "round" })
     ] });
   }
+  function Avatar({ src, alt }) {
+    const [tries, setTries] = (0, import_react9.useState)([]);
+    (0, import_react9.useEffect)(() => {
+      setTries(src ? [src, ...avatarFallbacks(src)] : []);
+    }, [src]);
+    if (!tries.length) return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(ThurinLogo, {});
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("img", { className: "thurin-card-avatar", src: tries[0], alt, onError: () => setTries((t2) => t2.slice(1)) });
+  }
   function ThurinCard({ ens, address, theme = "thurin" }) {
     const input = ens || address;
     const identity = useThurinIdentity(input);
@@ -31962,14 +31987,7 @@ ${prettyStateOverride(stateOverride)}`;
     const hasVerifiedPgp = identity.claims.some((c2) => c2.verification?.verified && !c2.revoked);
     return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "thurin-card", "data-thurin-theme": theme, children: [
       /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("a", { className: "thurin-card-header", href: profileUrl || void 0, target: "_blank", rel: "noopener noreferrer", children: [
-        identity.ensAvatar ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-          "img",
-          {
-            className: "thurin-card-avatar",
-            src: identity.ensAvatar,
-            alt: identity.ensName || ""
-          }
-        ) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(ThurinLogo, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Avatar, { src: identity.ensAvatar, alt: identity.ensName || "" }),
         /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
           identity.ensName && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "thurin-card-name", children: identity.ensName }),
           displayAddress && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "thurin-card-address", children: displayAddress })
