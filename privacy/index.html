@@ -352,13 +352,13 @@
 
   <main class="content">
     <h1>Privacy Policy</h1>
-    <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: 18 September 2026</p>
+    <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: 24 September 2026</p>
 
     <h2>Overview</h2>
-    <p>Thurin Labs LLC ("Thurin Labs," "we," "our," or "us") builds <strong>Thurin.id</strong> (<a href="https://thurin.id">thurin.id</a>), identity infrastructure for Ethereum. Thurin.id is an identity explorer and an attestation flow (thurin.id/attest) that binds an Ethereum address to a PGP key and to accounts on other platforms. This policy covers thurin.id, thurinlabs.id, docs.thurin.id, and the copies of those sites served under our ENS names.</p>
+    <p>Thurin Labs LLC ("Thurin Labs," "we," "our," or "us") builds <strong>Thurin.id</strong> (<a href="https://thurin.id">thurin.id</a>), identity infrastructure for Ethereum. Thurin.id is an identity explorer and an attestation flow (thurin.id/attest) that binds an Ethereum address to a PGP key and to accounts on other platforms. This policy covers thurin.id, thurinlabs.id, docs.thurin.id, mathom.thurinlabs.id, the keyserver at keys.thurin.id, the relay at relay.thurin.id, and the copies of those sites served under our ENS names.</p>
 
     <div class="highlight-box">
-      <p>Thurin has no accounts, no database of users, and no server that reads or verifies anything on your behalf. Everything you publish goes on the Ethereum blockchain from your own wallet, and every check runs in your own browser. The only Thurin systems that see any traffic at all are ordinary web servers, described below.</p>
+      <p>Thurin has no accounts, no database of users, and no server that reads or verifies anything on your behalf. Everything you publish goes on the Ethereum blockchain from your own wallet, and every check runs in your own browser. The only Thurin systems that see any traffic at all are the web servers, keyserver, and relay described below.</p>
     </div>
 
     <h2>What Goes On-Chain</h2>
@@ -417,23 +417,24 @@
     </ul>
 
     <h2>Web Servers and Logs</h2>
-    <p>Our sites are static pages served through a web server (nginx) we operate, in front of copies pinned to IPFS. Like any web server, it records standard access logs: the IP address making the request, the page requested, the time, and the browser's user-agent string. These logs are used only to keep the sites running and are rotated and deleted on a short schedule. They are not analysed, sold, or shared.</p>
+    <p>Our sites are static pages served through a web server (nginx) we operate, which fetches them from copies pinned to IPFS. It keeps no access logs: no record of who visited, which pages, or with what browser. Only a request that fails can leave a line with its IP address in the server's error log, which is rotated away after two weeks. When it fetches a page from the IPFS gateway, it sends nothing about you (no IP address, no browser details, and not which identity you are looking at).</p>
+    <p>Two small services answer requests directly: the <strong>keyserver</strong> (keys.thurin.id), which serves PGP keys from the blockchain to tools like gpg, and the <strong>relay</strong> (relay.thurin.id), which publishes a claim for you when you choose to have Thurin pay for it. Neither records IP addresses. The relay limits how often one caller can use it by counting requests in memory under a salted hash, which is discarded when the service restarts; what it publishes is public on-chain anyway.</p>
     <p>One small service of ours does more than serve files: the <strong>share-card service</strong> renders link previews and identity-card images when a social platform or another site requests one. It reads the same public on-chain data your browser would, caches the result for about an hour, and stores nothing else. It sees the requesting platform's request, not yours.</p>
     <p>Our ENS-hosted copies (thurinlabs.eth, id.thurinlabs.eth) are served by third-party IPFS gateways such as eth.limo, which keep their own logs under their own policies.</p>
 
     <h2>Third Parties Your Browser Talks To</h2>
     <p>Thurin sends nothing to third parties. Your browser, however, contacts several services directly in order to verify an identity, and each of them sees that request in the ordinary way:</p>
     <ul>
-      <li><strong>An Ethereum node</strong> to read claims. thurin.id uses an Alchemy endpoint; the library and embed default to a public node. Any node works.</li>
-      <li><strong>ENS</strong>, via the same node, to resolve names, and the ENS avatar service for profile images.</li>
+      <li><strong>An Ethereum node</strong> to read claims. By default thurin.id, the library, and the embed use PublicNode's free public endpoint (ethereum.publicnode.com), which sees your IP address and the identities you look up. You can choose your own node in the thurin.id footer; the choice is saved only in your browser. Any node works.</li>
+      <li><strong>ENS</strong>, via the same node, to resolve names. Profile images load only from content-addressed storage (through the ipfs.io or arweave.net gateway) or from euc.li, where the ENS app stores uploaded avatars. An image on a server the name's owner controls is not loaded, so that owner cannot see who views the page.</li>
       <li><strong>The platforms behind proofs:</strong> GitHub's API, Codeberg's API, Cloudflare's DNS-over-HTTPS resolver, and the Mastodon instance named in a proof. Farcaster proofs are checked through Neynar's API.</li>
       <li><strong>EFP (Ethereum Follow Protocol)</strong> for follower counts on identity pages.</li>
-      <li><strong>Your wallet.</strong> If you connect over WalletConnect by QR code, the pairing goes through WalletConnect's relay.</li>
+      <li><strong>Your wallet.</strong> If you connect a mobile wallet by QR code, the pairing goes through WalletConnect's relay. Nothing is sent to WalletConnect until you choose to connect.</li>
     </ul>
     <p>We use no third-party analytics, advertising, or tracking services, and no data is shared with anyone for marketing.</p>
 
     <h2>Cookies and Browser Storage</h2>
-    <p>Our sites set no cookies. Your browser keeps two things locally: your theme preference, and, on thurin.id, the wallet library's record of a connected wallet so it can reconnect. Both stay on your device and can be cleared at any time.</p>
+    <p>Our sites set no cookies. Your browser keeps up to three things locally: your theme preference; on thurin.id, the wallet library's record of a connected wallet so it can reconnect; and the Ethereum node you chose, if you chose one. All stay on your device and can be cleared at any time.</p>
 
     <h2>Your Choices and Rights</h2>
     <ul>
