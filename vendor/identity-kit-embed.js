@@ -8816,9 +8816,9 @@ var ThurinEmbed = (() => {
   // node_modules/viem/_esm/utils/address/isAddress.js
   function isAddress(address, options) {
     const { strict = true } = options ?? {};
-    const cacheKey = `${address}.${strict}`;
-    if (isAddressCache.has(cacheKey))
-      return isAddressCache.get(cacheKey);
+    const cacheKey2 = `${address}.${strict}`;
+    if (isAddressCache.has(cacheKey2))
+      return isAddressCache.get(cacheKey2);
     const result = (() => {
       if (!addressRegex.test(address))
         return false;
@@ -8828,7 +8828,7 @@ var ThurinEmbed = (() => {
         return checksumAddress(address) === address;
       return true;
     })();
-    isAddressCache.set(cacheKey, result);
+    isAddressCache.set(cacheKey2, result);
     return result;
   }
   var addressRegex, isAddressCache;
@@ -23153,6 +23153,53 @@ ${prettyStateOverride(stateOverride)}`;
     }
   }
 
+  // node_modules/viem/_esm/utils/observe.js
+  var listenersCache = /* @__PURE__ */ new Map();
+  var cleanupCache = /* @__PURE__ */ new Map();
+  var callbackCount = 0;
+  function observe(observerId, callbacks, fn2) {
+    const callbackId = ++callbackCount;
+    const getListeners = () => listenersCache.get(observerId) || [];
+    const unsubscribe = () => {
+      const listeners2 = getListeners();
+      listenersCache.set(observerId, listeners2.filter((cb) => cb.id !== callbackId));
+    };
+    const unwatch = () => {
+      const listeners2 = getListeners();
+      if (!listeners2.some((cb) => cb.id === callbackId))
+        return;
+      const cleanup2 = cleanupCache.get(observerId);
+      if (listeners2.length === 1 && cleanup2) {
+        const p2 = cleanup2();
+        if (p2 instanceof Promise)
+          p2.catch(() => {
+          });
+      }
+      unsubscribe();
+    };
+    const listeners = getListeners();
+    listenersCache.set(observerId, [
+      ...listeners,
+      { id: callbackId, fns: callbacks }
+    ]);
+    if (listeners && listeners.length > 0)
+      return unwatch;
+    const emit = {};
+    for (const key in callbacks) {
+      emit[key] = ((...args) => {
+        const listeners2 = getListeners();
+        if (listeners2.length === 0)
+          return;
+        for (const listener of listeners2)
+          listener.fns[key]?.(...args);
+      });
+    }
+    const cleanup = fn2(emit);
+    if (typeof cleanup === "function")
+      cleanupCache.set(observerId, cleanup);
+    return unwatch;
+  }
+
   // node_modules/viem/_esm/utils/wait.js
   async function wait(time) {
     return new Promise((res) => setTimeout(res, time));
@@ -23181,6 +23228,178 @@ ${prettyStateOverride(stateOverride)}`;
     });
   }
 
+  // node_modules/viem/_esm/actions/public/watchBlockNumber.js
+  init_fromHex();
+
+  // node_modules/viem/_esm/utils/poll.js
+  function poll(fn2, { emitOnBegin, initialWaitTime, interval }) {
+    let active = true;
+    const unwatch = () => active = false;
+    const watch = async () => {
+      let data;
+      if (emitOnBegin)
+        data = await fn2({ unpoll: unwatch });
+      const initialWait = await initialWaitTime?.(data) ?? interval;
+      await wait(initialWait);
+      const poll2 = async () => {
+        if (!active)
+          return;
+        await fn2({ unpoll: unwatch });
+        await wait(interval);
+        poll2();
+      };
+      poll2();
+    };
+    watch();
+    return unwatch;
+  }
+
+  // node_modules/viem/_esm/actions/public/watchBlockNumber.js
+  init_stringify();
+
+  // node_modules/viem/_esm/utils/promise/withCache.js
+  var promiseCache = /* @__PURE__ */ new Map();
+  var responseCache = /* @__PURE__ */ new Map();
+  function getCache(cacheKey2) {
+    const buildCache = (cacheKey3, cache) => ({
+      clear: () => cache.delete(cacheKey3),
+      get: () => cache.get(cacheKey3),
+      set: (data) => cache.set(cacheKey3, data)
+    });
+    const promise = buildCache(cacheKey2, promiseCache);
+    const response = buildCache(cacheKey2, responseCache);
+    return {
+      clear: () => {
+        promise.clear();
+        response.clear();
+      },
+      promise,
+      response
+    };
+  }
+  async function withCache(fn2, { cacheKey: cacheKey2, cacheTime = Number.POSITIVE_INFINITY }) {
+    const cache = getCache(cacheKey2);
+    const response = cache.response.get();
+    if (response && cacheTime > 0) {
+      const age = Date.now() - response.created.getTime();
+      if (age < cacheTime)
+        return response.data;
+    }
+    let promise = cache.promise.get();
+    if (!promise) {
+      promise = fn2();
+      cache.promise.set(promise);
+    }
+    try {
+      const data = await promise;
+      cache.response.set({ created: /* @__PURE__ */ new Date(), data });
+      return data;
+    } finally {
+      cache.promise.clear();
+    }
+  }
+
+  // node_modules/viem/_esm/actions/public/getBlockNumber.js
+  var cacheKey = (id) => `blockNumber.${id}`;
+  async function getBlockNumber(client, { cacheTime = client.cacheTime } = {}) {
+    const blockNumberHex = await withCache(() => client.request({
+      method: "eth_blockNumber"
+    }), { cacheKey: cacheKey(client.uid), cacheTime });
+    return BigInt(blockNumberHex);
+  }
+
+  // node_modules/viem/_esm/actions/public/watchBlockNumber.js
+  function watchBlockNumber(client, { emitOnBegin = false, emitMissed = false, onBlockNumber, onError, poll: poll_, pollingInterval = client.pollingInterval }) {
+    const enablePolling = (() => {
+      if (typeof poll_ !== "undefined")
+        return poll_;
+      if (client.transport.type === "webSocket" || client.transport.type === "ipc")
+        return false;
+      if (client.transport.type === "fallback" && (client.transport.transports[0].config.type === "webSocket" || client.transport.transports[0].config.type === "ipc"))
+        return false;
+      return true;
+    })();
+    let prevBlockNumber;
+    const pollBlockNumber = () => {
+      const observerId = stringify([
+        "watchBlockNumber",
+        client.uid,
+        emitOnBegin,
+        emitMissed,
+        pollingInterval
+      ]);
+      return observe(observerId, { onBlockNumber, onError }, (emit) => poll(async () => {
+        try {
+          const blockNumber = await getAction(client, getBlockNumber, "getBlockNumber")({ cacheTime: 0 });
+          if (prevBlockNumber !== void 0) {
+            if (blockNumber === prevBlockNumber)
+              return;
+            if (blockNumber - prevBlockNumber > 1 && emitMissed) {
+              for (let i2 = prevBlockNumber + 1n; i2 < blockNumber; i2++) {
+                emit.onBlockNumber(i2, prevBlockNumber);
+                prevBlockNumber = i2;
+              }
+            }
+          }
+          if (prevBlockNumber === void 0 || blockNumber > prevBlockNumber) {
+            emit.onBlockNumber(blockNumber, prevBlockNumber);
+            prevBlockNumber = blockNumber;
+          }
+        } catch (err) {
+          emit.onError?.(err);
+        }
+      }, {
+        emitOnBegin,
+        interval: pollingInterval
+      }));
+    };
+    const subscribeBlockNumber = () => {
+      const observerId = stringify([
+        "watchBlockNumber",
+        client.uid,
+        emitOnBegin,
+        emitMissed
+      ]);
+      return observe(observerId, { onBlockNumber, onError }, (emit) => {
+        let active = true;
+        let unsubscribe = () => active = false;
+        (async () => {
+          try {
+            const transport = (() => {
+              if (client.transport.type === "fallback") {
+                const transport2 = client.transport.transports.find((transport3) => transport3.config.type === "webSocket" || transport3.config.type === "ipc");
+                if (!transport2)
+                  return client.transport;
+                return transport2.value;
+              }
+              return client.transport;
+            })();
+            const { unsubscribe: unsubscribe_ } = await transport.subscribe({
+              params: ["newHeads"],
+              onData(data) {
+                if (!active)
+                  return;
+                const blockNumber = hexToBigInt(data.result?.number);
+                emit.onBlockNumber(blockNumber, prevBlockNumber);
+                prevBlockNumber = blockNumber;
+              },
+              onError(error) {
+                emit.onError?.(error);
+              }
+            });
+            unsubscribe = unsubscribe_;
+            if (!active)
+              unsubscribe();
+          } catch (err) {
+            onError?.(err);
+          }
+        })();
+        return () => unsubscribe();
+      });
+    };
+    return enablePolling ? pollBlockNumber() : subscribeBlockNumber();
+  }
+
   // node_modules/viem/_esm/utils/buildRequest.js
   init_base();
   init_request();
@@ -23189,14 +23408,14 @@ ${prettyStateOverride(stateOverride)}`;
 
   // node_modules/viem/_esm/utils/promise/withDedupe.js
   init_lru();
-  var promiseCache = /* @__PURE__ */ new LruMap(8192);
+  var promiseCache2 = /* @__PURE__ */ new LruMap(8192);
   function withDedupe(fn2, { enabled = true, id }) {
     if (!enabled || !id)
       return fn2();
-    if (promiseCache.get(id))
-      return promiseCache.get(id);
-    const promise = fn2().finally(() => promiseCache.delete(id));
-    promiseCache.set(id, promise);
+    if (promiseCache2.get(id))
+      return promiseCache2.get(id);
+    const promise = fn2().finally(() => promiseCache2.delete(id));
+    promiseCache2.set(id, promise);
     return promise;
   }
 
@@ -24752,7 +24971,7 @@ ${prettyStateOverride(stateOverride)}`;
   }
 
   // src/provider.tsx
-  var import_react7 = __toESM(require_react(), 1);
+  var import_react8 = __toESM(require_react(), 1);
 
   // node_modules/wagmi/dist/esm/context.js
   var import_react2 = __toESM(require_react(), 1);
@@ -25501,6 +25720,14 @@ ${prettyStateOverride(stateOverride)}`;
     }
   }
 
+  // node_modules/@wagmi/core/dist/esm/actions/getBlockNumber.js
+  function getBlockNumber2(config, parameters = {}) {
+    const { chainId, ...rest } = parameters;
+    const client = config.getClient({ chainId });
+    const action = getAction2(client, getBlockNumber, "getBlockNumber");
+    return action(rest);
+  }
+
   // node_modules/@wagmi/core/dist/esm/actions/getChainId.js
   function getChainId(config) {
     return config.state.chainId;
@@ -25628,6 +25855,28 @@ ${prettyStateOverride(stateOverride)}`;
       });
     }
   };
+
+  // node_modules/@wagmi/core/dist/esm/actions/watchBlockNumber.js
+  function watchBlockNumber2(config, parameters) {
+    const { syncConnectedChain = config._internal.syncConnectedChain, ...rest } = parameters;
+    let unwatch;
+    const listener = (chainId) => {
+      if (unwatch)
+        unwatch();
+      const client = config.getClient({ chainId });
+      const action = getAction2(client, watchBlockNumber, "watchBlockNumber");
+      unwatch = action(rest);
+      return unwatch;
+    };
+    const unlisten = listener(parameters.chainId);
+    let unsubscribe;
+    if (syncConnectedChain && !parameters.chainId)
+      unsubscribe = config.subscribe(({ chainId }) => chainId, async (chainId) => listener(chainId));
+    return () => {
+      unlisten?.();
+      unsubscribe?.();
+    };
+  }
 
   // node_modules/@wagmi/core/dist/esm/actions/watchChainId.js
   function watchChainId(config, parameters) {
@@ -29619,6 +29868,22 @@ ${prettyStateOverride(stateOverride)}`;
     return rest;
   }
 
+  // node_modules/@wagmi/core/dist/esm/query/getBlockNumber.js
+  function getBlockNumberQueryOptions(config, options = {}) {
+    return {
+      gcTime: 0,
+      async queryFn({ queryKey }) {
+        const { scopeKey: _2, ...parameters } = queryKey[1];
+        const blockNumber = await getBlockNumber2(config, parameters);
+        return blockNumber ?? null;
+      },
+      queryKey: getBlockNumberQueryKey(options)
+    };
+  }
+  function getBlockNumberQueryKey(options = {}) {
+    return ["blockNumber", filterQueryOptions(options)];
+  }
+
   // node_modules/@wagmi/core/dist/esm/query/getEnsAddress.js
   function getEnsAddressQueryOptions(config, options = {}) {
     return {
@@ -29944,6 +30209,63 @@ ${prettyStateOverride(stateOverride)}`;
     return (0, import_react4.useSyncExternalStore)((onChange) => watchChainId(config, { onChange }), () => getChainId(config), () => getChainId(config));
   }
 
+  // node_modules/wagmi/dist/esm/hooks/useWatchBlockNumber.js
+  var import_react5 = __toESM(require_react(), 1);
+  function useWatchBlockNumber(parameters = {}) {
+    const { enabled = true, onBlockNumber, config: _2, ...rest } = parameters;
+    const config = useConfig(parameters);
+    const configChainId = useChainId({ config });
+    const chainId = parameters.chainId ?? configChainId;
+    (0, import_react5.useEffect)(() => {
+      if (!enabled)
+        return;
+      if (!onBlockNumber)
+        return;
+      return watchBlockNumber2(config, {
+        ...rest,
+        chainId,
+        onBlockNumber
+      });
+    }, [
+      chainId,
+      config,
+      enabled,
+      onBlockNumber,
+      ///
+      rest.onError,
+      rest.emitMissed,
+      rest.emitOnBegin,
+      rest.poll,
+      rest.pollingInterval,
+      rest.syncConnectedChain
+    ]);
+  }
+
+  // node_modules/wagmi/dist/esm/hooks/useBlockNumber.js
+  function useBlockNumber(parameters = {}) {
+    const { query = {}, watch } = parameters;
+    const config = useConfig(parameters);
+    const queryClient = useQueryClient();
+    const configChainId = useChainId({ config });
+    const chainId = parameters.chainId ?? configChainId;
+    const options = getBlockNumberQueryOptions(config, {
+      ...parameters,
+      chainId
+    });
+    useWatchBlockNumber({
+      ...{
+        config: parameters.config,
+        chainId: parameters.chainId,
+        ...typeof watch === "object" ? watch : {}
+      },
+      enabled: Boolean((query.enabled ?? true) && (typeof watch === "object" ? watch.enabled : watch)),
+      onBlockNumber(blockNumber) {
+        queryClient.setQueryData(options.queryKey, blockNumber);
+      }
+    });
+    return useQuery2({ ...query, ...options });
+  }
+
   // node_modules/wagmi/dist/esm/hooks/useEnsAddress.js
   function useEnsAddress(parameters = {}) {
     const { name, query = {} } = parameters;
@@ -30000,12 +30322,12 @@ ${prettyStateOverride(stateOverride)}`;
   }
 
   // node_modules/wagmi/dist/esm/hooks/useReadContracts.js
-  var import_react5 = __toESM(require_react(), 1);
+  var import_react6 = __toESM(require_react(), 1);
   function useReadContracts(parameters = {}) {
     const { contracts = [], query = {} } = parameters;
     const config = useConfig(parameters);
     const chainId = useChainId({ config });
-    const contractsChainId = (0, import_react5.useMemo)(() => {
+    const contractsChainId = (0, import_react6.useMemo)(() => {
       if (contracts.length === 0)
         return void 0;
       const firstChainId = contracts[0].chainId;
@@ -30014,7 +30336,7 @@ ${prettyStateOverride(stateOverride)}`;
       return void 0;
     }, [contracts]);
     const options = readContractsQueryOptions(config, { ...parameters, chainId: contractsChainId ?? chainId });
-    const enabled = (0, import_react5.useMemo)(() => {
+    const enabled = (0, import_react6.useMemo)(() => {
       let isContractsValid = false;
       for (const contract of contracts) {
         const { abi, address, functionName } = contract;
@@ -30035,14 +30357,14 @@ ${prettyStateOverride(stateOverride)}`;
   }
 
   // src/context.ts
-  var import_react6 = __toESM(require_react(), 1);
+  var import_react7 = __toESM(require_react(), 1);
   var defaultConfig = {
     baseUrl: "https://thurin.id",
     network: "mainnet"
   };
-  var IdentityKitContext = (0, import_react6.createContext)(defaultConfig);
+  var IdentityKitContext = (0, import_react7.createContext)(defaultConfig);
   function useIdentityKitConfig() {
-    return (0, import_react6.useContext)(IdentityKitContext);
+    return (0, import_react7.useContext)(IdentityKitContext);
   }
 
   // src/provider.tsx
@@ -30068,7 +30390,7 @@ ${prettyStateOverride(stateOverride)}`;
       hasWagmi = true;
     } catch {
     }
-    const wagmiConfig = (0, import_react7.useMemo)(() => createDefaultWagmiConfig(rpcUrl, network), [rpcUrl, network]);
+    const wagmiConfig = (0, import_react8.useMemo)(() => createDefaultWagmiConfig(rpcUrl, network), [rpcUrl, network]);
     if (hasWagmi) {
       return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_jsx_runtime3.Fragment, { children });
     }
@@ -30082,12 +30404,28 @@ ${prettyStateOverride(stateOverride)}`;
     network = "mainnet",
     registryAddress
   }) {
-    const config = (0, import_react7.useMemo)(
+    const config = (0, import_react8.useMemo)(
       () => ({ rpcUrl, neynarApiKey, baseUrl, network, registryAddress }),
       [rpcUrl, neynarApiKey, baseUrl, network, registryAddress]
     );
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(IdentityKitContext.Provider, { value: config, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(WagmiDetector, { rpcUrl, network, children }) });
   }
+
+  // src/core/identityError.ts
+  function needsRpcProbe(s2) {
+    return s2.ensEmpty || s2.ensFailed || s2.claimsFailed;
+  }
+  function identityErrorKind(s2) {
+    if (!needsRpcProbe(s2) || s2.rpcAnswered === void 0) return null;
+    if (!s2.rpcAnswered) return "rpc";
+    if (s2.ensEmpty && !s2.ensFailed) return "not-found";
+    return "read";
+  }
+  var IDENTITY_ERROR_TEXT = {
+    rpc: "Couldn't reach the RPC, so nothing here is known yet.",
+    "not-found": "No address for this name.",
+    read: "Couldn't read the registry."
+  };
 
   // node_modules/@adraffy/ens-normalize/dist/index.mjs
   var COMPRESSED$1 = "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";
@@ -31035,7 +31373,7 @@ ${prettyStateOverride(stateOverride)}`;
     const registry = getRegistry(config.network, config.registryAddress);
     const chain = chainFor(config.network);
     const owner = address;
-    const { data: rows, isLoading: rowsLoading } = useReadContract({
+    const { data: rows, isLoading: rowsLoading, isFetched: rowsFetched, error: rowsError, refetch: refetchRows } = useReadContract({
       address: registry.address,
       abi: REGISTRY_ABI,
       functionName: "attestationsOf",
@@ -31051,7 +31389,7 @@ ${prettyStateOverride(stateOverride)}`;
       args: [owner, BigInt(i2)],
       chainId: chain.id
     })) : [];
-    const { data: payloads, isLoading: payloadsLoading } = useReadContracts({
+    const { data: payloads, isLoading: payloadsLoading, error: payloadsError, refetch: refetchPayloads } = useReadContracts({
       contracts,
       query: { enabled: contracts.length > 0 }
     });
@@ -31091,7 +31429,7 @@ ${prettyStateOverride(stateOverride)}`;
       enabled: !!rows && payloadsReady,
       staleTime: 3e5
     });
-    const isLoading = rowsLoading || payloadsLoading || verifyLoading || !!owner && rows !== void 0 && !payloadsReady;
+    const isLoading = rowsLoading || !!owner && !rowsFetched || payloadsLoading || verifyLoading || !!owner && rows !== void 0 && !payloadsReady;
     const activeClaims = (claims || []).filter((c2) => !c2.revoked);
     const verifiedClaims = activeClaims.filter((c2) => c2.verification?.verified);
     const currentFingerprint = verifiedClaims.length > 0 ? verifiedClaims[verifiedClaims.length - 1].fingerprint : null;
@@ -31100,7 +31438,15 @@ ${prettyStateOverride(stateOverride)}`;
       totalClaims: count,
       activeClaims: activeClaims.length,
       currentFingerprint,
-      isLoading
+      isLoading,
+      /** A registry read failed (the RPC may be down; useThurinIdentity finds out which). */
+      error: rowsError ?? payloadsError ?? null,
+      refetch: () => {
+        if (owner) {
+          refetchRows();
+          if (contracts.length > 0) refetchPayloads();
+        }
+      }
     };
   }
 
@@ -31513,7 +31859,7 @@ ${prettyStateOverride(stateOverride)}`;
     const chain = chainFor(useIdentityKitConfig().network);
     const isAddr = ensOrAddress ? isAddress2(ensOrAddress) : false;
     const ensInput = ensOrAddress && !isAddr ? safeNormalize(ensOrAddress) : void 0;
-    const { data: resolvedAddress } = useEnsAddress({
+    const { data: resolvedAddress, error: ensError, isFetched: ensFetched, refetch: refetchEns } = useEnsAddress({
       name: ensInput,
       chainId: chain.id,
       query: { enabled: !!ensInput }
@@ -31531,7 +31877,9 @@ ${prettyStateOverride(stateOverride)}`;
       totalClaims,
       activeClaims,
       currentFingerprint,
-      isLoading: claimsLoading
+      isLoading: claimsLoading,
+      error: claimsError,
+      refetch: refetchClaims
     } = useAttestations(address);
     const currentClaim = [...claims].reverse().find(
       (c2) => !c2.revoked && c2.verification?.verified && c2.fingerprint === currentFingerprint
@@ -31542,6 +31890,21 @@ ${prettyStateOverride(stateOverride)}`;
       isLoading: proofsLoading
     } = usePGPProofs(currentFingerprint, currentClaim?.pgpPublicKey ?? null);
     const { efp, isLoading: efpLoading } = useEFPGraph(address);
+    const lookup = { ensEmpty: !!ensInput && ensFetched && !resolvedAddress, ensFailed: !!ensError, claimsFailed: !!claimsError };
+    const probeNeeded = needsRpcProbe(lookup);
+    const probe = useBlockNumber({
+      chainId: chain.id,
+      scopeKey: `thurin-rpc-probe:${ensOrAddress ?? ""}`,
+      query: { enabled: probeNeeded, retry: 0, staleTime: 0, gcTime: 0 }
+    });
+    const rpcAnswered = !probeNeeded || probe.isFetching ? void 0 : probe.isSuccess ? true : probe.isError ? false : void 0;
+    const errorKind = identityErrorKind({ ...lookup, rpcAnswered });
+    const probing = probeNeeded && rpcAnswered === void 0;
+    const retry = () => {
+      if (ensInput) refetchEns();
+      refetchClaims();
+      if (probeNeeded) probe.refetch();
+    };
     return {
       address,
       ensName: displayName,
@@ -31553,8 +31916,12 @@ ${prettyStateOverride(stateOverride)}`;
       pgpKeyInfo,
       proofs,
       efp,
-      isLoading: claimsLoading || proofsLoading || efpLoading,
-      error: null
+      // "Not finished" counts as loading, including queries paused in a background tab: the card
+      // must not render defaults (zeros) for an identity it hasn't looked up yet.
+      isLoading: !!ensInput && !ensFetched || claimsLoading || proofsLoading || efpLoading || probing,
+      error: errorKind ? new Error(IDENTITY_ERROR_TEXT[errorKind]) : null,
+      errorKind,
+      retry
     };
   }
 
@@ -31578,6 +31945,19 @@ ${prettyStateOverride(stateOverride)}`;
       return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "thurin-card", "data-thurin-theme": theme, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "thurin-card-loading", children: "Loading identity..." }) });
     }
     const displayAddress = identity.address || null;
+    if (identity.errorKind) {
+      return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "thurin-card", "data-thurin-theme": theme, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "thurin-card-header", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(ThurinLogo, {}),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "thurin-card-name", children: identity.ensName || ens || address }) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "thurin-card-error", role: "status", children: [
+          identity.error?.message,
+          identity.errorKind !== "not-found" && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { type: "button", className: "thurin-card-retry", onClick: identity.retry, children: "Try again" })
+        ] }),
+        profileUrl && identity.errorKind !== "not-found" && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("a", { className: "thurin-card-link", href: profileUrl, target: "_blank", rel: "noopener noreferrer", children: "View on Thurin" })
+      ] });
+    }
     const verifiedProofs = identity.proofs.filter((p2) => p2.status === "verified").length;
     const hasVerifiedPgp = identity.claims.some((c2) => c2.verification?.verified && !c2.revoked);
     return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "thurin-card", "data-thurin-theme": theme, children: [
@@ -31605,7 +31985,7 @@ ${prettyStateOverride(stateOverride)}`;
           /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "thurin-card-stat-label", children: "Proofs" })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "thurin-card-stat", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "thurin-card-stat-value", children: identity.efp?.followers ?? 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "thurin-card-stat-value", children: identity.efp ? identity.efp.followers : "\u2013" }),
           /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { className: "thurin-card-stat-label", children: "Followers" })
         ] })
       ] }),
@@ -31638,7 +32018,7 @@ ${prettyStateOverride(stateOverride)}`;
   var themes_default = '[data-thurin-theme="thurin"] {\n  --thurin-bg: #1a1a12;\n  --thurin-surface: #252518;\n  --thurin-surface-deep: #151510;\n  --thurin-border: #3a3a2a;\n  --thurin-text: #faf9f5;\n  --thurin-text-muted: #a8a598;\n  --thurin-heading: #7c9a3e;\n  --thurin-primary: #7c9a3e;\n  --thurin-primary-dim: #5c7a2e;\n  --thurin-secondary: #c9a227;\n  --thurin-success: #7c9a3e;\n  --thurin-error: #d44a4a;\n}\n\n[data-thurin-theme="dark"] {\n  --thurin-bg: #141010;\n  --thurin-surface: #1e1918;\n  --thurin-surface-deep: #110e0c;\n  --thurin-border: #352a22;\n  --thurin-text: #ede5d8;\n  --thurin-text-muted: #a09080;\n  --thurin-heading: #f0ece4;\n  --thurin-primary: #c9a227;\n  --thurin-primary-dim: #8a7020;\n  --thurin-secondary: #d4a04a;\n  --thurin-success: #7c9a3e;\n  --thurin-error: #d44a4a;\n}\n\n[data-thurin-theme="light"] {\n  --thurin-bg: #faf9f5;\n  --thurin-surface: #f0efe8;\n  --thurin-surface-deep: #e8e7e0;\n  --thurin-border: #d0cfc4;\n  --thurin-text: #2a2a22;\n  --thurin-text-muted: #6b6960;\n  --thurin-heading: #5a7228;\n  --thurin-primary: #5a7228;\n  --thurin-primary-dim: #7c9a3e;\n  --thurin-secondary: #a8861e;\n  --thurin-success: #5a7228;\n  --thurin-error: #b83a3a;\n}\n';
 
   // src/components/ThurinCard/ThurinCard.css?raw
-  var ThurinCard_default = ".thurin-card {\n  font-family: 'Crimson Pro', Georgia, serif;\n  background: var(--thurin-surface);\n  border: 1px solid var(--thurin-border);\n  border-radius: 8px;\n  padding: 20px;\n  color: var(--thurin-text);\n  max-width: 380px;\n  width: 100%;\n}\n\n.thurin-card * {\n  box-sizing: border-box;\n}\n\n.thurin-card-header {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 16px;\n  text-decoration: none;\n  color: inherit;\n  cursor: pointer;\n}\n\n.thurin-card-header:hover .thurin-card-name {\n  color: var(--thurin-primary);\n}\n\n.thurin-card-avatar {\n  width: 48px;\n  height: 48px;\n  border-radius: 50%;\n  border: 2px solid var(--thurin-border);\n  object-fit: cover;\n  flex-shrink: 0;\n}\n\n.thurin-card-avatar-placeholder {\n  width: 48px;\n  height: 48px;\n  border-radius: 50%;\n  border: 2px solid var(--thurin-border);\n  flex-shrink: 0;\n  overflow: hidden;\n}\n\n.thurin-card-name {\n  font-family: 'Cinzel', serif;\n  font-size: 18px;\n  font-weight: 700;\n  color: var(--thurin-heading);\n  line-height: 1.2;\n}\n\n.thurin-card-address {\n  font-family: 'Share Tech Mono', monospace;\n  font-size: 11px;\n  color: var(--thurin-text-muted);\n  margin-top: 2px;\n  word-break: break-all;\n}\n\n.thurin-card-stats {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 8px;\n  margin-bottom: 16px;\n}\n\n.thurin-card-stat {\n  text-align: center;\n  padding: 8px 4px;\n  background: var(--thurin-surface-deep);\n  border-radius: 4px;\n}\n\n.thurin-card-stat-value {\n  font-family: 'Cinzel', serif;\n  font-size: 20px;\n  font-weight: 700;\n  color: var(--thurin-heading);\n  display: block;\n}\n\n.thurin-card-stat-label {\n  font-family: 'Share Tech Mono', monospace;\n  font-size: 10px;\n  color: var(--thurin-text-muted);\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n}\n\n.thurin-card-badges {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n  margin-bottom: 16px;\n}\n\n.thurin-card-badge {\n  font-family: 'Share Tech Mono', monospace;\n  font-size: 11px;\n  padding: 3px 8px;\n  border-radius: 3px;\n  border: 1px solid;\n}\n\n.thurin-card-badge--verified {\n  color: var(--thurin-success);\n  border-color: var(--thurin-success);\n}\n\n.thurin-card-badge--unverified {\n  color: var(--thurin-text-muted);\n  border-color: var(--thurin-border);\n}\n\n.thurin-card-link {\n  display: block;\n  text-align: right;\n  font-size: 12px;\n  color: var(--thurin-text-muted);\n  text-decoration: none;\n}\n\n.thurin-card-link:hover {\n  color: var(--thurin-primary);\n}\n\n.thurin-card-loading {\n  text-align: center;\n  padding: 24px;\n  color: var(--thurin-text-muted);\n  font-size: 14px;\n}\n";
+  var ThurinCard_default = ".thurin-card {\n  font-family: 'Crimson Pro', Georgia, serif;\n  background: var(--thurin-surface);\n  border: 1px solid var(--thurin-border);\n  border-radius: 8px;\n  padding: 20px;\n  color: var(--thurin-text);\n  max-width: 380px;\n  width: 100%;\n}\n\n.thurin-card * {\n  box-sizing: border-box;\n}\n\n.thurin-card-header {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 16px;\n  text-decoration: none;\n  color: inherit;\n  cursor: pointer;\n}\n\n.thurin-card-header:hover .thurin-card-name {\n  color: var(--thurin-primary);\n}\n\n.thurin-card-avatar {\n  width: 48px;\n  height: 48px;\n  border-radius: 50%;\n  border: 2px solid var(--thurin-border);\n  object-fit: cover;\n  flex-shrink: 0;\n}\n\n.thurin-card-avatar-placeholder {\n  width: 48px;\n  height: 48px;\n  border-radius: 50%;\n  border: 2px solid var(--thurin-border);\n  flex-shrink: 0;\n  overflow: hidden;\n}\n\n.thurin-card-name {\n  font-family: 'Cinzel', serif;\n  font-size: 18px;\n  font-weight: 700;\n  color: var(--thurin-heading);\n  line-height: 1.2;\n}\n\n.thurin-card-address {\n  font-family: 'Share Tech Mono', monospace;\n  font-size: 11px;\n  color: var(--thurin-text-muted);\n  margin-top: 2px;\n  word-break: break-all;\n}\n\n.thurin-card-stats {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 8px;\n  margin-bottom: 16px;\n}\n\n.thurin-card-stat {\n  text-align: center;\n  padding: 8px 4px;\n  background: var(--thurin-surface-deep);\n  border-radius: 4px;\n}\n\n.thurin-card-stat-value {\n  font-family: 'Cinzel', serif;\n  font-size: 20px;\n  font-weight: 700;\n  color: var(--thurin-heading);\n  display: block;\n}\n\n.thurin-card-stat-label {\n  font-family: 'Share Tech Mono', monospace;\n  font-size: 10px;\n  color: var(--thurin-text-muted);\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n}\n\n.thurin-card-badges {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n  margin-bottom: 16px;\n}\n\n.thurin-card-badge {\n  font-family: 'Share Tech Mono', monospace;\n  font-size: 11px;\n  padding: 3px 8px;\n  border-radius: 3px;\n  border: 1px solid;\n}\n\n.thurin-card-badge--verified {\n  color: var(--thurin-success);\n  border-color: var(--thurin-success);\n}\n\n.thurin-card-badge--unverified {\n  color: var(--thurin-text-muted);\n  border-color: var(--thurin-border);\n}\n\n.thurin-card-link {\n  display: block;\n  text-align: right;\n  font-size: 12px;\n  color: var(--thurin-text-muted);\n  text-decoration: none;\n}\n\n.thurin-card-link:hover {\n  color: var(--thurin-primary);\n}\n\n.thurin-card-loading {\n  text-align: center;\n  padding: 24px;\n  color: var(--thurin-text-muted);\n  font-size: 14px;\n}\n\n.thurin-card-error {\n  margin: 12px 0;\n  font-size: 13px;\n  line-height: 1.5;\n  color: var(--thurin-text-muted);\n}\n\n.thurin-card-retry {\n  display: inline;\n  margin-left: 8px;\n  padding: 0;\n  background: none;\n  border: none;\n  font: inherit;\n  color: var(--thurin-primary);\n  text-decoration: underline;\n  text-underline-offset: 3px;\n  cursor: pointer;\n}\n";
 
   // src/embed.tsx
   var import_jsx_runtime5 = __toESM(require_jsx_runtime(), 1);
