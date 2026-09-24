@@ -22,9 +22,7 @@
   <meta name="twitter:description" content="Thurin Labs builds tools that let you prove who you are online without handing your life to a company. Open, private, and yours to keep.">
   <meta name="twitter:image" content="https://thurinlabs.id/images/og-image.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="fonts/fonts.css">
 
   <script>
     (function() {
@@ -809,8 +807,10 @@
     })();
   </script>
 
-  <!-- Live identity card (identity-kit embed; reads the registry from the browser, no Thurin server) -->
-  <script src="https://cdn.jsdelivr.net/npm/@thurinlabs/identity-kit@1/dist/embed.global.js"></script>
+  <!-- Live identity card (identity-kit embed; reads the registry from the browser, no Thurin server).
+       Shipped with the site, not from a CDN: no third party sees visitors, and a kit publish
+       changes this page only when this file is replaced. Provenance: vendor/README.md. -->
+  <script src="vendor/identity-kit-embed.js"></script>
 
 </body>
 </html>

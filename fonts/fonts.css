@@ -1,0 +1,11 @@
+/* Self-hosted so no page view reaches Google (Thurin privacy rule). Latin subset, the
+   weights the pages use. Fonts: SIL Open Font License 1.1, see OFL.txt. */
+@font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 400; font-display: swap; src: url(./cinzel-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 600; font-display: swap; src: url(./cinzel-latin-600-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 700; font-display: swap; src: url(./cinzel-latin-700-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Crimson Pro'; font-style: normal; font-weight: 300; font-display: swap; src: url(./crimson-pro-latin-300-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Crimson Pro'; font-style: normal; font-weight: 400; font-display: swap; src: url(./crimson-pro-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Crimson Pro'; font-style: normal; font-weight: 500; font-display: swap; src: url(./crimson-pro-latin-500-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Crimson Pro'; font-style: normal; font-weight: 600; font-display: swap; src: url(./crimson-pro-latin-600-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Crimson Pro'; font-style: italic; font-weight: 400; font-display: swap; src: url(./crimson-pro-latin-400-italic.woff2) format('woff2'); }
+@font-face { font-family: 'Share Tech Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url(./share-tech-mono-latin-400-normal.woff2) format('woff2'); }
