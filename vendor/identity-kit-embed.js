@@ -30400,13 +30400,14 @@ ${prettyStateOverride(stateOverride)}`;
     children,
     rpcUrl,
     neynarApiKey,
+    farcasterHub,
     baseUrl = "https://thurin.id",
     network = "mainnet",
     registryAddress
   }) {
     const config = (0, import_react8.useMemo)(
-      () => ({ rpcUrl, neynarApiKey, baseUrl, network, registryAddress }),
-      [rpcUrl, neynarApiKey, baseUrl, network, registryAddress]
+      () => ({ rpcUrl, neynarApiKey, farcasterHub, baseUrl, network, registryAddress }),
+      [rpcUrl, neynarApiKey, farcasterHub, baseUrl, network, registryAddress]
     );
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(IdentityKitContext.Provider, { value: config, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(WagmiDetector, { rpcUrl, network, children }) });
   }
@@ -31640,29 +31641,27 @@ ${prettyStateOverride(stateOverride)}`;
       return { verified: false, reason: `DNS fetch failed: ${err.message}` };
     }
   }
+  var FARCASTER_HUB = "https://haatz.quilibrium.com";
   var NEYNAR_HUB = "https://hub-api.neynar.com";
-  async function resolveFid(username, apiKey) {
-    const resp = await fetch(
-      `${NEYNAR_HUB}/v1/userNameProofByName?name=${encodeURIComponent(username)}`,
-      { headers: { "x-api-key": apiKey } }
-    );
-    if (!resp.ok) return null;
-    const data = await resp.json();
-    return data.fid ?? null;
+  function farcasterSource(opts) {
+    if (opts.farcasterHub) return { base: opts.farcasterHub.replace(/\/+$/, ""), headers: {} };
+    if (opts.neynarApiKey) return { base: NEYNAR_HUB, headers: { "x-api-key": opts.neynarApiKey } };
+    return { base: FARCASTER_HUB, headers: {} };
   }
-  async function verifyFarcaster(proof, fingerprint, neynarApiKey) {
-    if (!neynarApiKey) {
-      return { verified: false, reason: "Farcaster verification requires a Neynar API key" };
-    }
+  async function verifyFarcaster(proof, fingerprint, opts = {}) {
+    const { base, headers } = farcasterSource(opts);
+    const host = base.replace(/^https?:\/\//, "");
     try {
-      const fid = await resolveFid(proof.user, neynarApiKey);
+      const nameResp = await fetch(`${base}/v1/userNameProofByName?name=${encodeURIComponent(proof.user)}`, { headers });
+      if (nameResp.status === 404) return { verified: false, reason: `Could not resolve Farcaster user "${proof.user}"` };
+      if (!nameResp.ok) return { verified: false, reason: `Couldn't check: the Farcaster node (${host}) returned ${nameResp.status}` };
+      const fid = (await nameResp.json()).fid;
       if (!fid) return { verified: false, reason: `Could not resolve Farcaster user "${proof.user}"` };
-      const headers = { "x-api-key": neynarApiKey };
       let pageToken = "";
       for (let page = 0; page < 5; page++) {
-        const url = `${NEYNAR_HUB}/v1/castsByFid?fid=${fid}&pageSize=100&reverse=true${pageToken ? `&pageToken=${pageToken}` : ""}`;
+        const url = `${base}/v1/castsByFid?fid=${fid}&pageSize=100&reverse=true${pageToken ? `&pageToken=${pageToken}` : ""}`;
         const resp = await fetch(url, { headers });
-        if (!resp.ok) return { verified: false, reason: `Farcaster Hub returned ${resp.status}` };
+        if (!resp.ok) return { verified: false, reason: `Couldn't check: the Farcaster node (${host}) returned ${resp.status}` };
         const data = await resp.json();
         for (const msg of data.messages || []) {
           if (msg.hash && msg.hash.startsWith(proof.castHash)) {
@@ -31677,7 +31676,7 @@ ${prettyStateOverride(stateOverride)}`;
       }
       return { verified: false, reason: "Cast not found" };
     } catch (err) {
-      return { verified: false, reason: `Farcaster fetch failed: ${err.message}` };
+      return { verified: false, reason: `Couldn't check: the Farcaster node (${host}) didn't answer (${err.message})` };
     }
   }
   async function verifyCodeberg(proof, fingerprint) {
@@ -31730,10 +31729,10 @@ ${prettyStateOverride(stateOverride)}`;
     codeberg: verifyCodeberg,
     mastodon: verifyMastodon
   };
-  async function verifyProof(proof, fingerprint, neynarApiKey) {
+  async function verifyProof(proof, fingerprint, opts) {
     const fn2 = verifiers[proof.provider];
     if (!fn2) return { verified: false, reason: "Unknown provider" };
-    return fn2(proof, fingerprint, neynarApiKey);
+    return fn2(proof, fingerprint, typeof opts === "string" ? { neynarApiKey: opts } : opts ?? {});
   }
 
   // src/hooks/usePGPProofs.ts
@@ -31750,7 +31749,7 @@ ${prettyStateOverride(stateOverride)}`;
         const identified = keyInfo.notations.map((n2) => identifyProof(n2)).filter((p2) => p2 !== null && p2.provider !== "unknown");
         const proofs = await Promise.all(
           identified.map(async (proof) => {
-            const result = await verifyProof(proof, fingerprint, config.neynarApiKey);
+            const result = await verifyProof(proof, fingerprint, { neynarApiKey: config.neynarApiKey, farcasterHub: config.farcasterHub });
             return {
               provider: proof.provider,
               label: proof.label,
@@ -32054,6 +32053,7 @@ ${prettyStateOverride(stateOverride)}`;
       const theme = el2.dataset.theme || "thurin";
       const rpcUrl = el2.dataset.rpcUrl;
       const neynarApiKey = el2.dataset.neynarKey;
+      const farcasterHub = el2.dataset.farcasterHub;
       const baseUrl = el2.dataset.baseUrl;
       const network = isNetworkName(el2.dataset.network) ? el2.dataset.network : "mainnet";
       const registryAddress = el2.dataset.registryAddress;
@@ -32066,7 +32066,7 @@ ${prettyStateOverride(stateOverride)}`;
       shadow.appendChild(container);
       const root = (0, import_client.createRoot)(container);
       const render = (t2) => root.render(
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(IdentityKitProvider, { rpcUrl, neynarApiKey, network, registryAddress, baseUrl, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(ThurinCard, { ...props, theme: t2 }) })
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(IdentityKitProvider, { rpcUrl, neynarApiKey, farcasterHub, network, registryAddress, baseUrl, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(ThurinCard, { ...props, theme: t2 }) })
       );
       render(theme);
       new MutationObserver(() => {

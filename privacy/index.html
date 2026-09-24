@@ -427,14 +427,14 @@
     <ul>
       <li><strong>An Ethereum node</strong> to read claims. By default thurin.id, the library, and the embed use PublicNode's free public endpoint (ethereum.publicnode.com), which sees your IP address and the identities you look up. You can choose your own node in the thurin.id footer; the choice is saved only in your browser. Any node works.</li>
       <li><strong>ENS</strong>, via the same node, to resolve names. Profile images load only from content-addressed storage (through the Filebase IPFS gateway, with Pinata's as a fallback, or arweave.net) or from euc.li, where the ENS app stores uploaded avatars. An image on a server the name's owner controls is not loaded, so that owner cannot see who views the page.</li>
-      <li><strong>The platforms behind proofs:</strong> GitHub's API, Codeberg's API, Cloudflare's DNS-over-HTTPS resolver, and the Mastodon instance named in a proof. Farcaster proofs are checked through Neynar's API.</li>
+      <li><strong>The platforms behind proofs:</strong> GitHub's API, Codeberg's API, Cloudflare's DNS-over-HTTPS resolver, and the Mastodon instance named in a proof. Farcaster proofs are checked through a public Farcaster node run by Quilibrium (haatz.quilibrium.com), with no account or key.</li>
       <li><strong>EFP (Ethereum Follow Protocol)</strong> for follower counts on identity pages.</li>
       <li><strong>Your wallet.</strong> If you connect a mobile wallet by QR code, the pairing goes through WalletConnect's relay. Nothing is sent to WalletConnect until you choose to connect.</li>
     </ul>
     <p>We use no third-party analytics, advertising, or tracking services, and no data is shared with anyone for marketing.</p>
 
     <h2>Cookies and Browser Storage</h2>
-    <p>Our sites set no cookies. Your browser keeps up to three things locally: your theme preference; on thurin.id, the wallet library's record of a connected wallet so it can reconnect; and the Ethereum node you chose, if you chose one. All stay on your device and can be cleared at any time.</p>
+    <p>Our sites set no cookies. Your browser keeps a few things locally: your theme preference; on thurin.id, the wallet library's settings, and the wallet and address you connected so it can reconnect; and the Ethereum node you chose, if you chose one. All stay on your device and can be cleared at any time.</p>
 
     <h2>Your Choices and Rights</h2>
     <ul>
