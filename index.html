@@ -39,8 +39,6 @@
     :root[data-theme="dark"] {
       --color-bg:              #1a1a12;
       --color-surface:         #252518;
-      --color-surface-deep:    #151510;
-      --color-surface-active:  #2a2a1e;
       --color-border:          #3a3a2a;
       --color-text:            #faf9f5;
       --color-text-muted:      #a8a598;
@@ -53,14 +51,11 @@
       --color-btn-primary-text: #1a1a12;
       --color-vignette-a:      rgba(124, 154, 62, 0.03);
       --color-vignette-b:      rgba(201, 162, 39, 0.02);
-      --color-scrawl:          rgba(124, 154, 62, 0.04);
     }
 
     :root[data-theme="light"] {
       --color-bg:              #faf9f5;
       --color-surface:         #f0efe8;
-      --color-surface-deep:    #e8e7e0;
-      --color-surface-active:  #edecd6;
       --color-border:          #d0cfc4;
       --color-text:            #2a2a22;
       --color-text-muted:      #6b6960;
@@ -73,7 +68,6 @@
       --color-btn-primary-text: #faf9f5;
       --color-vignette-a:      rgba(124, 154, 62, 0.03);
       --color-vignette-b:      rgba(168, 134, 30, 0.02);
-      --color-scrawl:          rgba(90, 114, 40, 0.06);
     }
 
     /* ── Reset ── */
@@ -339,7 +333,7 @@
       font-size: 0.85rem;
       color: var(--color-text-muted, #a8a598);
     }
-    .flagship-also code { font-family: var(--mono, monospace); font-size: 0.85em; }
+    .flagship-also code { font-family: 'Share Tech Mono', monospace; font-size: 0.85em; }
     .flagship-actions {
       display: flex;
       gap: 0.75rem;
@@ -581,16 +575,12 @@
 
     .footer-bottom a:hover { color: var(--color-primary); }
 
-    .mobile-break { display: none; }
-
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .header { padding: 1rem 1.25rem; }
       .header-wordmark { font-size: 1.5rem; }
       .header-brand svg { width: 36px; height: 36px; }
       .header-nav { gap: 1rem; }
-
-      .mobile-break { display: inline; }
 
       .hero { padding: 3.5rem 1.5rem 2.5rem; }
       .hero h1 { font-size: 2.2rem; }
@@ -608,7 +598,6 @@
     @media (max-width: 480px) {
       .header-wordmark { font-size: 1.3rem; }
       .header-brand svg { width: 30px; height: 30px; }
-      .header-nav a.nav-text { display: none; }
       .hero h1 { font-size: 1.8rem; }
 
       .footer-columns {
@@ -802,11 +791,6 @@
         if (href === 'https://thurin.id' || href.indexOf('https://thurin.id/') === 0) {
           a.setAttribute('href', 'https://id.' + suffix + href.slice('https://thurin.id'.length));
         }
-      });
-
-      // Rewrite ENS link
-      document.querySelectorAll('.ens-link').forEach(function(a) {
-        a.setAttribute('href', 'https://' + suffix);
       });
 
       // Privacy is always relative on ENS

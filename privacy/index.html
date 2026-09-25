@@ -31,7 +31,6 @@
       --color-primary:         #7c9a3e;
       --color-primary-light:   #96b84e;
       --color-secondary:       #c9a227;
-      --color-btn-primary-text: #1a1a12;
       --color-vignette-a:      rgba(124, 154, 62, 0.03);
       --color-vignette-b:      rgba(201, 162, 39, 0.02);
     }
@@ -46,7 +45,6 @@
       --color-primary:         #5a7228;
       --color-primary-light:   #4a6020;
       --color-secondary:       #a8861e;
-      --color-btn-primary-text: #faf9f5;
       --color-vignette-a:      rgba(124, 154, 62, 0.03);
       --color-vignette-b:      rgba(168, 134, 30, 0.02);
     }
@@ -516,8 +514,6 @@
 
       if (!isEthLimo && !isEth) return;
 
-      var suffix = isEth ? 'thurinlabs.eth' : 'thurinlabs.eth.limo';
-
       var appMap = {
         'https://thurin.id':        isEth ? 'https://id.thurinlabs.eth' : 'https://id.thurinlabs.eth.limo'
       };
@@ -525,10 +521,6 @@
       document.querySelectorAll('.app-link').forEach(function(a) {
         var href = a.getAttribute('href');
         if (appMap[href]) a.setAttribute('href', appMap[href]);
-      });
-
-      document.querySelectorAll('.ens-link').forEach(function(a) {
-        a.setAttribute('href', 'https://' + suffix);
       });
     })();
   </script>
