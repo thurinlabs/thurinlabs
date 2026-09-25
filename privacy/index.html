@@ -12,7 +12,7 @@
 
   <script>
     (function() {
-      // Two modes; an older stored "thurin" or "dark" lands on dark.
+      // Two modes: anything but a stored "light" is dark.
       try {
         if (localStorage.getItem('thurin-landing-theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
       } catch (e) {}

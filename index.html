@@ -27,7 +27,7 @@
 
   <script>
     (function() {
-      // Two modes; an older stored "thurin" or "dark" lands on dark.
+      // Two modes: anything but a stored "light" is dark.
       try {
         if (localStorage.getItem('thurin-landing-theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
       } catch (e) {}
@@ -762,7 +762,7 @@
       var cardSrc = cardImg && cardImg.getAttribute('src');
       function apply(theme) {
         document.documentElement.setAttribute('data-theme', theme);
-        if (cardImg) cardImg.setAttribute('src', theme === 'light' ? cardSrc + '?theme=light' : cardSrc);   // the card drawn in this mode
+        if (cardImg) cardImg.setAttribute('src', theme === 'light' ? cardSrc + '?theme=light' : cardSrc);
         var next = theme === 'light' ? 'dark' : 'light';
         button.setAttribute('aria-label', 'Switch to ' + next + ' mode');
         button.setAttribute('title', 'Switch to ' + next + ' mode');
@@ -775,9 +775,8 @@
       });
     })();
 
-    // Domain-aware link rewriting for ENS. Served from thurinlabs.eth (natively) or
-    // through a gateway (thurinlabs.eth.limo, .eth.link, ...), every Thurin link keeps
-    // the same suffix so a visitor who came in without DNS is never handed back to it.
+    // Served from thurinlabs.eth or a gateway (.eth.limo, .eth.link, …), Thurin links keep the same
+    // suffix, so a visitor who came in without DNS is never handed back to it.
     (function() {
       var host = window.location.hostname.toLowerCase();
       var m = host.match(/thurinlabs\.eth(\.[a-z0-9.-]+)?$/);
@@ -785,7 +784,6 @@
 
       var suffix = 'thurinlabs.eth' + (m[1] || '');
 
-      // Rewrite Thurin product links to the app's ENS name
       document.querySelectorAll('.app-link, .thurin-link').forEach(function(a) {
         var href = a.getAttribute('href') || '';
         if (href === 'https://thurin.id' || href.indexOf('https://thurin.id/') === 0) {
