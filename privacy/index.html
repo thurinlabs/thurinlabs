@@ -5,7 +5,7 @@
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy - Thurin Labs</title>
-  <meta name="description" content="Thurin Labs Privacy Policy. How Thurin protects your data. Privacy by default.">
+  <meta name="description" content="Thurin Labs privacy policy: what we see, and what we never collect.">
   <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
 
   <link rel="stylesheet" href="../fonts/fonts.css">
@@ -343,7 +343,7 @@
     <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: 25 September 2026</p>
 
     <h2>Overview</h2>
-    <p>Thurin Labs LLC ("Thurin Labs," "we," "our," or "us") builds <strong>Thurin.id</strong> (<a href="https://thurin.id">thurin.id</a>), identity infrastructure for Ethereum. Thurin.id is an identity explorer and an attestation flow (thurin.id/attest) that binds an Ethereum address to a PGP key and to accounts on other platforms. This policy covers thurin.id, thurinlabs.id, docs.thurin.id, mathom.thurinlabs.id, the keyserver at keys.thurin.id, the relay at relay.thurin.id, and the copies of those sites served under our ENS names.</p>
+    <p>Thurin Labs LLC ("Thurin Labs," "we," "our," or "us") builds <strong>Thurin.id</strong> (<a href="https://thurin.id">thurin.id</a>), PGP keys on Ethereum addresses. Thurin.id is a lookup site and an attest page (thurin.id/attest) that puts a PGP key on an Ethereum address, with proofs linking it to accounts on other platforms. This policy covers thurin.id, thurinlabs.id, docs.thurin.id, mathom.thurinlabs.id, the keyserver at keys.thurin.id, the relay at relay.thurin.id, and the copies of those sites served under our ENS names.</p>
 
     <div class="highlight-box">
       <p>Thurin.id has no accounts and no database of users. Everything you publish goes on the Ethereum blockchain from your own wallet, and checking an identity runs in your own browser. The only Thurin Labs systems that see any traffic are the web servers and three small services described below: the keyserver, the relay, and the share-card service.</p>
@@ -392,7 +392,7 @@
         </tr>
       </tbody>
     </table>
-    <p>Before you publish, the attestation page shows you exactly which names, proofs, and other notations are about to go on-chain. Nothing about you goes public unless you put it there. Replacing the key on a claim later, say to remove a proof, doesn't erase the old key: it stays readable in the blockchain's history, like everything else published there.</p>
+    <p>Before you publish, the attest page shows you exactly which names, proofs, and other notations are about to go on-chain. Nothing about you goes public unless you put it there. Replacing the key on a claim later, say to remove a proof, doesn't erase the old key: it stays readable in the blockchain's history, like everything else published there.</p>
 
     <h3>Processed only in your browser</h3>
     <ul>
@@ -411,7 +411,7 @@
 
     <h2>Web Servers and Logs</h2>
     <p>Our sites are static pages served through a web server (nginx) we operate, which fetches them from copies pinned to IPFS. It keeps no access logs: no record of who visited, which pages, or with what browser. Only a request that fails can leave a line with its IP address in the server's error log, which is rotated away after two weeks. When it fetches a page from the IPFS gateway, it sends nothing about you (no IP address, no browser details, and not which identity you are looking at).</p>
-    <p>Two small services answer requests directly: the <strong>keyserver</strong> (keys.thurin.id), which serves PGP keys from the blockchain to tools like gpg, and the <strong>relay</strong> (relay.thurin.id), which publishes a claim for you when you choose to have Thurin pay for it. Neither records IP addresses. The keyserver's log says only what kind of lookup it answered and whether it found a key, never what was looked up. The relay logs what it published, which is public on-chain anyway, and for a request it turns away only that it did so, not who asked. It limits how often one caller can use it by counting requests in memory under a salted hash, forgotten after an hour and discarded when the service restarts.</p>
+    <p>Two small services answer requests directly: the <strong>keyserver</strong> (keys.thurin.id), which serves PGP keys from the blockchain to tools like gpg, and the <strong>relay</strong> (relay.thurin.id), which publishes a claim for you when you choose to have Thurin Labs pay for it. Neither records IP addresses. The keyserver's log says only what kind of lookup it answered and whether it found a key, never what was looked up. The relay logs what it published, which is public on-chain anyway, and for a request it turns away only that it did so, not who asked. It limits how often one caller can use it by counting requests in memory under a salted hash, forgotten after an hour and discarded when the service restarts.</p>
     <p>The <strong>share-card service</strong> draws link previews, and the card images people put in READMEs and on pages (thurinlabs.id and thurin.id show one). It reads the same public on-chain data your browser would, fetches profile images only from the sources listed below, caches the result for about an hour, and stores nothing else. When a social platform or GitHub's image proxy asks for an image, it sees that request, not yours; when a page shows a card image straight from thurin.id, your browser asks our server for it, the same as for any page.</p>
     <p>Our ENS-hosted copies (thurinlabs.eth, id.thurinlabs.eth) are served by third-party IPFS gateways such as eth.limo, which keep their own logs under their own policies.</p>
 
@@ -434,8 +434,8 @@
       <li><strong>What is public is your choice.</strong> You decide which names, which email (if any), and which proofs go on-chain, and the page shows you before you publish.</li>
       <li><strong>Revocation.</strong> You can revoke a claim at any time from thurin.id/attest. Revoked claims are marked inactive and are no longer treated as your identity; the record of them remains on the blockchain.</li>
       <li><strong>Updating.</strong> You can replace the key stored on a claim, for example to remove a proof, without a new claim. The old key stays readable in the blockchain's history.</li>
-      <li><strong>Deletion.</strong> Blockchain data cannot be deleted by us or by anyone, including an old key you replaced and a record you cleared. This is a property of public blockchains, and it is why the attestation flow asks you to choose carefully.</li>
-      <li><strong>Access.</strong> Everything Thurin knows about an identity is on the identity page, readable by anyone, including you. There is nothing further to request.</li>
+      <li><strong>Deletion.</strong> Blockchain data cannot be deleted by us or by anyone, including an old key you replaced and a record you cleared. This is a property of public blockchains, and it is why the attest page asks you to choose carefully.</li>
+      <li><strong>Access.</strong> Everything Thurin.id knows about an identity is on the identity page, readable by anyone, including you. There is nothing further to request.</li>
     </ul>
 
     <h2>Security</h2>
@@ -443,11 +443,11 @@
       <li>All signing and verification happens on your device</li>
       <li>The PGPRegistry contract has no owner, no administrator, no fees, and no upgrade mechanism; its source is published and verified</li>
       <li>The verification library (identity-kit), the sites, and the contract are open source</li>
-      <li>No Thurin system holds any secret of yours</li>
+      <li>No Thurin Labs system holds any secret of yours</li>
     </ul>
 
     <h2>Children's Privacy</h2>
-    <p>Thurin is not directed at children. Publishing a claim requires an Ethereum wallet and a transaction fee.</p>
+    <p>Thurin.id is not directed at children. Publishing a claim requires an Ethereum wallet and a transaction fee.</p>
 
     <h2>Changes to This Policy</h2>
     <p>We update this page when the products change. Changes are posted here with a new date.</p>
@@ -455,7 +455,7 @@
     <h2>Contact</h2>
     <ul>
       <li>Email: <a href="mailto:hello@thurin.id">hello@thurin.id</a></li>
-      <li>Website: <a href="https://thurin.id">thurin.id</a></li>
+      <li>Website: <a href="https://thurinlabs.id">thurinlabs.id</a></li>
     </ul>
 
     <h2>Legal Basis (GDPR)</h2>
@@ -468,8 +468,8 @@
     <div class="footer-columns">
       <div class="footer-col">
         <span class="footer-col-label">Home</span>
-        <a href="https://thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Thurin</a>
-        <a href="https://docs.thurin.id" target="_blank" rel="noopener noreferrer">Docs</a>
+        <a href="https://thurin.id" class="app-link" target="_blank" rel="noopener noreferrer">Thurin.id</a>
+        <a href="https://docs.thurin.id/#/roadmap" target="_blank" rel="noopener noreferrer">Roadmap</a>
         <a href="../privacy/">Privacy</a>
       </div>
       <div class="footer-col">
