@@ -11,13 +11,11 @@ index.html            the page (single file: styles, markup, light/dark switch, 
 privacy/index.html    privacy policy
 images/               favicon, share image, background tile
 fonts/                the fonts, served from here
-vendor/               the identity-kit embed, served from here
 .github/workflows/    mirror to Codeberg
 ```
 
-No build step, no framework, no dependencies. The identity card on the page is the
-[identity-kit embed](https://docs.thurin.id/#/sdk), served from `vendor/` (no CDN) and rendered in the
-visitor's browser from on-chain data; nothing on this site talks to a Thurin server.
+No build step, no framework, no dependencies, and no third-party scripts. The card on the page is
+thurinlabs.eth's card image, drawn by thurin.id's share-card service; showing it asks no one else.
 
 ## Run it locally
 

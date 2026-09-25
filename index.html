@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
+  <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thurin Labs — Prove more. Reveal less.</title>
   <meta name="description" content="Thurin Labs builds tools that let you prove who you are online without handing your life to a company. Open, private, and yours to keep.">
@@ -305,8 +306,8 @@
     /* ── Flagship ── */
     .flagship {
       display: flex;
-      gap: 2.5rem;
-      align-items: center;
+      flex-direction: column;
+      gap: 1.75rem;
     }
 
     .flagship-text {
@@ -334,6 +335,7 @@
 
     .flagship-also {
       margin: 0;
+      text-align: center;
       font-size: 0.85rem;
       color: var(--color-text-muted, #a8a598);
     }
@@ -342,12 +344,21 @@
       display: flex;
       gap: 0.75rem;
       flex-wrap: wrap;
+      justify-content: center;
     }
 
+    /* thurinlabs.eth's card image, drawn by thurin.id: showing it asks no one else. */
     .flagship-card {
-      flex-shrink: 0;
-      width: 340px;
+      display: block;
+      align-self: center;
+      width: 100%;
+      max-width: 640px;
+      line-height: 0;
+      border: 1px solid var(--color-border);
+      transition: border-color 0.2s;
     }
+    .flagship-card:hover { border-color: var(--color-primary-dim); }
+    .flagship-card img { width: 100%; height: auto; }
 
     /* ── Beliefs ── */
     .beliefs {
@@ -501,8 +512,7 @@
       .hero { padding: 3.5rem 1.5rem 2.5rem; }
       .hero h1 { font-size: 2.2rem; }
       .hero p { font-size: 1.05rem; }
-      .flagship { flex-direction: column; align-items: stretch; gap: 1.5rem; }
-      .flagship-card { width: 100%; }
+      .flagship { gap: 1.5rem; }
       .beliefs { grid-template-columns: 1fr; }
       .belief { padding: 1.25rem 0; border-right: none; border-bottom: 1px solid var(--color-border); }
       .belief:last-child { border-bottom: none; }
@@ -662,9 +672,9 @@
         </div>
         <p class="flagship-also">Also: <a href="https://keys.thurin.id" class="ens" target="_blank" rel="noopener noreferrer">keys.thurin.id</a>, a PGP keyserver whose database is Ethereum &middot; <code>npx @thurinlabs/thurin</code></p>
       </div>
-      <div class="flagship-card">
-        <div data-thurin-card="thurinlabs.eth" data-theme="thurin" data-rpc-url="https://ethereum.publicnode.com"></div>
-      </div>
+      <a class="flagship-card thurin-link" href="https://thurin.id/ens/thurinlabs.eth" target="_blank" rel="noopener noreferrer">
+        <img src="https://thurin.id/card/ens/thurinlabs.eth.png" width="640" height="200" alt="thurinlabs.eth: its PGP key, and whether it's verified on Ethereum">
+      </a>
     </div>
   </section>
 
@@ -759,13 +769,14 @@
     // Theme toggle
     (function() {
       var button = document.getElementById('themeToggle');
-      var card = document.querySelector('[data-thurin-card]');
+      var cardImg = document.querySelector('.flagship-card img');
+      var cardSrc = cardImg && cardImg.getAttribute('src');
       function apply(theme) {
         document.documentElement.setAttribute('data-theme', theme);
+        if (cardImg) cardImg.setAttribute('src', theme === 'light' ? cardSrc + '?theme=light' : cardSrc);   // the card drawn in this mode
         var next = theme === 'light' ? 'dark' : 'light';
         button.setAttribute('aria-label', 'Switch to ' + next + ' mode');
         button.setAttribute('title', 'Switch to ' + next + ' mode');
-        if (card) card.setAttribute('data-theme', theme === 'light' ? 'light' : 'thurin');   // the card's dark look is "thurin"
       }
       apply(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
       button.addEventListener('click', function() {
@@ -793,10 +804,6 @@
         }
       });
 
-      // The live card's "View on Thurin" link follows too
-      var card = document.querySelector('[data-thurin-card]');
-      if (card) card.setAttribute('data-base-url', 'https://id.' + suffix);
-
       // Rewrite ENS link
       document.querySelectorAll('.ens-link').forEach(function(a) {
         a.setAttribute('href', 'https://' + suffix);
@@ -808,11 +815,6 @@
       });
     })();
   </script>
-
-  <!-- Live identity card (identity-kit embed; reads the registry from the browser, no Thurin server).
-       Shipped with the site, not from a CDN: no third party sees visitors, and a kit publish
-       changes this page only when this file is replaced. Provenance: vendor/README.md. -->
-  <script src="vendor/identity-kit-embed.js"></script>
 
 </body>
 </html>

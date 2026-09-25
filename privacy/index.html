@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
+  <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy - Thurin Labs</title>
   <meta name="description" content="Thurin Labs Privacy Policy. How Thurin protects your data. Privacy by default.">
@@ -488,13 +489,11 @@
     // Theme toggle
     (function() {
       var button = document.getElementById('themeToggle');
-      var card = document.querySelector('[data-thurin-card]');
       function apply(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         var next = theme === 'light' ? 'dark' : 'light';
         button.setAttribute('aria-label', 'Switch to ' + next + ' mode');
         button.setAttribute('title', 'Switch to ' + next + ' mode');
-        if (card) card.setAttribute('data-theme', theme === 'light' ? 'light' : 'thurin');   // the card's dark look is "thurin"
       }
       apply(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
       button.addEventListener('click', function() {
