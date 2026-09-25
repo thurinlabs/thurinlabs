@@ -215,13 +215,22 @@
     }
 
     .section-label {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--color-text-muted);
+      color: var(--color-text);
       margin-bottom: 1.25rem;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 1.5rem;
+      height: 2px;
+      background: var(--color-secondary);
     }
 
     /* ── Hero ── */
@@ -377,6 +386,15 @@
       font-size: 0.95rem;
       margin-top: 1.5rem;
     }
+
+    .beliefs-link {
+      font-style: normal;
+      color: var(--color-primary);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .beliefs-link:hover { text-decoration: underline; }
 
     /* ── About ── */
     .about {
@@ -671,7 +689,7 @@
         <p>You don&rsquo;t have to trust us. Anyone can check any claim for themselves, and there is no switch we could flip to change the answer.</p>
       </div>
     </div>
-    <p class="beliefs-line">No token. No fees. No backend. That&rsquo;s not a promise, it&rsquo;s how it&rsquo;s built.</p>
+    <p class="beliefs-line">No token. No fees. No backend. That&rsquo;s not a promise, it&rsquo;s how it&rsquo;s built. <a class="beliefs-link" href="https://docs.thurin.id/#/crops" target="_blank" rel="noopener noreferrer">How we check ourselves &rarr;</a></p>
   </section>
 
   <!-- About -->
@@ -693,7 +711,7 @@
       <div class="app-card">
         <h2>Mathom</h2>
         <p>A computer that never touches the internet, for keeping your most important key safe.</p>
-        <span class="app-card-soon">Coming soon</span>
+        <span class="app-card-soon">In design</span>
       </div>
       <div class="app-card">
         <h2>Noir Audit Skill</h2>
