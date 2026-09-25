@@ -7,14 +7,16 @@ The product lives at [thurin.id](https://thurin.id) ([thurin-id](https://github.
 ## What's here
 
 ```
-index.html            the page (single file: styles, markup, theme switch, ENS-aware links)
+index.html            the page (single file: styles, markup, light/dark switch, ENS-aware links)
 privacy/index.html    privacy policy
 images/               favicon, share image, background tile
+fonts/                the fonts, served from here
+vendor/               the identity-kit embed, served from here
 .github/workflows/    mirror to Codeberg
 ```
 
 No build step, no framework, no dependencies. The identity card on the page is the
-[identity-kit embed](https://docs.thurin.id/#/sdk), loaded from a CDN and rendered in the
+[identity-kit embed](https://docs.thurin.id/#/sdk), served from `vendor/` (no CDN) and rendered in the
 visitor's browser from on-chain data; nothing on this site talks to a Thurin server.
 
 ## Run it locally
@@ -29,7 +31,7 @@ Then open http://localhost:8000.
 ## Deploy
 
 Deployed as a static IPFS site. The operator's `deploy.sh` (kept outside this repo) pins the
-directory, points nginx at the new CID, and writes the `thurinlabs.eth` contenthash. The
+files of the tagged commit ([Verify a deploy](https://docs.thurin.id/#/guides/verify-deploy)), points nginx at the new CID, and writes the `thurinlabs.eth` contenthash. The
 page detects when it is served from ENS (`thurinlabs.eth`, or a gateway such as
 `thurinlabs.eth.limo`) and rewrites its Thurin.id links to `id.thurinlabs.eth` with the same
 suffix, so a visitor who arrived without DNS is never handed back to it.
