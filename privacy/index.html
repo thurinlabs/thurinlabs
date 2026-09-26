@@ -306,6 +306,25 @@
       .footer-columns { gap: 2.5rem; }
     }
 
+    /* Phones: each row of the data table becomes a small block, its columns labelled. */
+    @media (max-width: 600px) {
+      .content thead { display: none; }
+      .content table, .content tbody, .content tr, .content td { display: block; }
+      .content tr { border: 1px solid var(--color-border); margin-bottom: 0.75rem; }
+      .content td { border: none; padding: 0.35rem 0.8rem; }
+      .content td:first-child { color: var(--color-text); font-weight: 600; padding-top: 0.6rem; }
+      .content td:nth-child(2)::before, .content td:nth-child(3)::before {
+        display: block;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        color: var(--color-text);
+      }
+      .content td:nth-child(2)::before { content: "Where it comes from"; }
+      .content td:nth-child(3)::before { content: "Notes"; }
+      .content td:last-child { padding-bottom: 0.6rem; }
+    }
+
     @media (max-width: 480px) {
       .header-wordmark { font-size: 1.3rem; }
       .header-brand svg { width: 30px; height: 30px; }
