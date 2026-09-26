@@ -260,6 +260,24 @@
       line-height: 1.8;
     }
 
+    .hero p.hero-definition {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      line-height: 1.6;
+      margin-top: 1.75rem;
+    }
+    .hero-definition::before {
+      content: "";
+      display: block;
+      width: 1.5rem;
+      height: 2px;
+      margin: 0 auto 1.5rem;
+      background: var(--color-secondary);
+    }
+    .hero-definition dfn { font-style: normal; color: var(--color-text); }
+    .hero-definition span { display: block; }
+
     /* ── Buttons ── */
     .btn {
       font-family: 'Cinzel', serif;
@@ -636,6 +654,7 @@
     <h1 class="rise">Prove more.</h1>
     <h1 class="hero-line-2 rise rise-2">Reveal less.</h1>
     <p class="rise rise-3">Thurin Labs builds tools that let you prove who you are online without handing your life to a company. Open and yours to keep.</p>
+    <p class="hero-definition rise rise-3"><dfn>thurin</dfn> · <i>Sindarin, the Elvish of Tolkien's Middle-earth</i><span>secret, hidden</span></p>
   </section>
 
   <!-- Flagship -->
