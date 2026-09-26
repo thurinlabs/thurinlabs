@@ -260,23 +260,6 @@
       line-height: 1.8;
     }
 
-    .hero p.hero-definition {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
-      letter-spacing: 0.02em;
-      line-height: 1.6;
-      margin-top: 1.75rem;
-    }
-    .hero-definition::before {
-      content: "";
-      display: block;
-      width: 1.5rem;
-      height: 2px;
-      margin: 0 auto 1.5rem;
-      background: var(--color-secondary);
-    }
-    .hero-definition dfn { font-style: normal; color: var(--color-text); }
-    .hero-definition span { display: block; }
 
     /* ── Buttons ── */
     .btn {
@@ -593,6 +576,10 @@
 
     .footer-bottom a:hover { color: var(--color-primary); }
 
+    .footer-bottom { flex-direction: column; align-items: center; gap: 0.9rem; text-align: center; }
+    .footer-definition { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; line-height: 1.6; }
+    .footer-tengwar { height: 2.2em; width: auto; color: var(--color-text); }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .header { padding: 1rem 1.25rem; }
@@ -611,6 +598,7 @@
       }
 
       .footer-columns { gap: 2.5rem; }
+      .footer-quip span { display: block; }
     }
 
     @media (max-width: 480px) {
@@ -654,7 +642,6 @@
     <h1 class="rise">Prove more.</h1>
     <h1 class="hero-line-2 rise rise-2">Reveal less.</h1>
     <p class="rise rise-3">Thurin Labs builds tools that let you prove who you are online without handing your life to a company. Open and yours to keep.</p>
-    <p class="hero-definition rise rise-3"><dfn>thurin</dfn> · <i>Sindarin, the Elvish of Tolkien's Middle-earth</i><span>secret, hidden</span></p>
   </section>
 
   <!-- Flagship -->
@@ -769,6 +756,7 @@
       </div>
     </div>
     <div class="footer-bottom">
+      <p class="footer-definition"><svg class="footer-tengwar" viewBox="-1 -10 40 28" role="img" aria-label="thurin, in Tengwar" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><path d="M0 -9v19M0 1q6.5 -1.5 6.5 4.5q0 5 -6.5 4"/><g transform="translate(11.5,0)"><path d="M0 1.5q3 -2 4 3q0.6 3.5 2.6 3.5M7 0.5q1 6.5 -2.2 11.5q-2 3.2 -4.8 4.2q-1 0.2 -0.6 -1M2.2 -4.5q0.6 -4.2 3.6 -4q2.4 0.5 0 3q-0.8 0.8 -0.6 1.4"/></g><g transform="translate(24,0)"><path d="M0 10V3q0 -3 3 -3q3 0 3 3.5V10M6 3.5q0 -3.5 3 -3.5q3 0 3 3.5v5q0 1.5 1.2 1"/><circle cx="6" cy="-5" r="1" fill="currentColor" stroke="none"/></g></svg><span class="footer-quip"><span>Thurin: Elvish for "secret" or "hidden,"</span> <span>from Tolkien's Middle-earth.</span></span></p>
       <span>&copy; 2026 Thurin Labs</span>
     </div>
   </footer>
