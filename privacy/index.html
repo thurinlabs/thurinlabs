@@ -192,6 +192,16 @@
 
     .content a:hover { text-decoration: underline; }
 
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    .to-top {
+      margin-top: 2.5rem;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+    }
+
     .highlight-box {
       background: var(--color-surface);
       border: 1px solid var(--color-primary);
@@ -338,7 +348,7 @@
     }
   </style>
 </head>
-<body>
+<body id="top">
 
   <div class="header-border">
   <header class="header">
@@ -357,13 +367,13 @@
 
   <main class="content">
     <h1>Privacy Policy</h1>
-    <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: 25 September 2026</p>
+    <p class="effective-date">Effective: January 2026 &nbsp;|&nbsp; Last updated: 26 September 2026</p>
 
     <h2>Overview</h2>
     <p>Thurin Labs LLC ("Thurin Labs," "we," "our," or "us") builds <strong>Thurin.id</strong> (<a href="https://thurin.id">thurin.id</a>), PGP keys on Ethereum addresses. Thurin.id is a lookup site and an attest page (thurin.id/attest) that puts a PGP key on an Ethereum address, with proofs linking it to accounts on other platforms. This policy covers thurin.id, thurinlabs.id, docs.thurin.id, mathom.thurinlabs.id, the keyserver at keys.thurin.id, the relay at relay.thurin.id, and the copies of those sites served under our ENS names.</p>
 
     <div class="highlight-box">
-      <p>Thurin.id has no accounts and no database of users. Everything you publish goes on the Ethereum blockchain from your own wallet, and checking an identity runs in your own browser. The only Thurin Labs systems that see any traffic are the web servers and three small services described below: the keyserver, the relay, and the share-card service.</p>
+      <p>Thurin.id has no accounts and no database of users. Everything you publish goes on the Ethereum blockchain from your own wallet, or through a permission you signed that the relay or another wallet sends, and checking an identity runs in your own browser. The only Thurin Labs systems that see any traffic are the web servers and three small services described below: the keyserver, the relay, and the share-card service.</p>
     </div>
 
     <h2>What Goes On-Chain</h2>
@@ -379,13 +389,13 @@
       <tbody>
         <tr>
           <td>Your Ethereum address</td>
-          <td>The wallet that publishes the claim</td>
-          <td>The claim is published from the address it names</td>
+          <td>The address the claim names</td>
+          <td>You publish from it, or sign a permission that the relay or another wallet sends for you</td>
         </tr>
         <tr>
           <td>Your PGP public key</td>
           <td>Pasted by you</td>
-          <td>Includes the name(s) on the key. By default Thurin.id leaves out any name that contains an email address or carries a note (a notation) holding one, and refuses a signature with your email written into it; you can choose to include your email, and that choice cannot be undone for that claim</td>
+          <td>Includes the name(s) on the key and every subkey on it, including an SSH (authentication) subkey, which links that SSH key to your address. Photo IDs and other people's signatures are left out. By default Thurin.id leaves out any name that contains an email address or carries a note (a notation) holding one, and refuses a signature with your email written into it; you can choose to include your email, and that choice cannot be undone for that claim</td>
         </tr>
         <tr>
           <td>Proof links</td>
@@ -401,6 +411,16 @@
           <td>Timestamps</td>
           <td>The blockchain</td>
           <td>When the claim was published, updated, or revoked</td>
+        </tr>
+        <tr>
+          <td>Who sent it</td>
+          <td>The transaction</td>
+          <td>Your address, or the relay or wallet that sent your permission. Public, like every transaction</td>
+        </tr>
+        <tr>
+          <td>Revocations</td>
+          <td>Set by you, if you revoke</td>
+          <td>When, and the reason you gave. Marking a key compromised is permanent for that address. Cancelling unused permissions is recorded too</td>
         </tr>
         <tr>
           <td>Records</td>
@@ -428,8 +448,8 @@
 
     <h2>Web Servers and Logs</h2>
     <p>Our sites are static pages served through a web server (nginx) we operate, which fetches them from copies pinned to IPFS. It keeps no access logs: no record of who visited, which pages, or with what browser. Only a request that fails can leave a line with its IP address in the server's error log, which is rotated away after two weeks. When it fetches a page from the IPFS gateway, it sends nothing about you (no IP address, no browser details, and not which identity you are looking at).</p>
-    <p>Two small services answer requests directly: the <strong>keyserver</strong> (keys.thurin.id), which serves PGP keys from the blockchain to tools like gpg, and the <strong>relay</strong> (relay.thurin.id), which publishes a claim for you when you choose to have Thurin Labs pay for it. Neither records IP addresses. The keyserver's log says only what kind of lookup it answered and whether it found a key, never what was looked up. The relay logs what it published, which is public on-chain anyway, and for a request it turns away only that it did so, not who asked. It limits how often one caller can use it by counting requests in memory under a salted hash, forgotten after an hour and discarded when the service restarts.</p>
-    <p>The <strong>share-card service</strong> draws link previews, and the card images people put in READMEs and on pages (thurinlabs.id and thurin.id show one). It reads the same public on-chain data your browser would, fetches profile images only from the sources listed below, caches the result for about an hour, and stores nothing else. When a social platform or GitHub's image proxy asks for an image, it sees that request, not yours; when a page shows a card image straight from thurin.id, your browser asks our server for it, the same as for any page.</p>
+    <p>Two small services answer requests directly: the <strong>keyserver</strong> (keys.thurin.id), which serves PGP keys from the blockchain to tools like gpg, and the <strong>relay</strong> (relay.thurin.id), which publishes a claim for you when you choose to have Thurin Labs pay for it. Neither records IP addresses. The keyserver's log says only what kind of lookup it answered and whether it found a key, never what was looked up. The relay logs what it published, which is public on-chain anyway, and for a request it turns away only that it did so, not who asked. It limits how often one caller can use it by counting requests in memory under a salted hash, dropped once an hour has passed or the service restarts.</p>
+    <p>The <strong>share-card service</strong> draws link previews, and the card images people put in READMEs and on pages (thurinlabs.id and thurin.id show one). It reads the same public on-chain data your browser would, fetches profile images only from the sources listed below, caches the result for about an hour, and keeps nothing else, apart from error messages about an identity it failed to draw. When a social platform or GitHub's image proxy asks for an image, it sees that request, not yours; when a page shows a card image straight from thurin.id, your browser asks our server for it, the same as for any page.</p>
     <p>Our ENS-hosted copies (thurinlabs.eth, id.thurinlabs.eth) are served by third-party IPFS gateways such as eth.limo, which keep their own logs under their own policies.</p>
 
     <h2>Third Parties Your Browser Talks To</h2>
@@ -437,9 +457,10 @@
     <ul>
       <li><strong>An Ethereum node</strong> to read claims. By default thurin.id and the library use PublicNode's free public endpoint (ethereum.publicnode.com), which sees your IP address and the identities you look up. You can choose your own node in the thurin.id footer; the choice is saved only in your browser. Any node works.</li>
       <li><strong>ENS</strong>, via the same node, to resolve names. Profile images load only from content-addressed storage (through the Filebase IPFS gateway, with Pinata's as a fallback, or arweave.net) or from euc.li, where the ENS app stores uploaded avatars. An image on a server the name's owner controls is not loaded, so that owner cannot see who views the page. A name that keeps its data on a server of its owner's choosing (an "offchain" name) is followed only when you type that name yourself, and that server then sees your IP and the name; names the page looks up on its own are never followed.</li>
-      <li><strong>The platforms behind proofs</strong>, only when you press <em>Check proofs</em> (or chose <em>Always check</em>): GitHub's API, Codeberg's API, Cloudflare's DNS-over-HTTPS resolver, and the Mastodon server named in a proof, which the identity's owner picks and so may see who checks. Farcaster proofs are checked through a public Farcaster node run by Quilibrium (haatz.quilibrium.com), with no account or key. The command-line tool checks proofs when you ask it to look someone up; <code>thurin status --no-proofs</code> asks only the Ethereum node.</li>
+      <li><strong>The platforms behind proofs</strong>, only when you press <em>Check proofs</em> (or chose <em>Always check</em>): GitHub's API, Codeberg's API, Cloudflare's DNS-over-HTTPS resolver, and the Mastodon server named in a proof, which the identity's owner picks and so may see who checks. Farcaster proofs are checked through a public Farcaster node run by Quilibrium (haatz.quilibrium.com), with no account or key.</li>
+      <li><strong>The command-line tool</strong> talks to the same services, plus a relay only if you set one. It checks proofs when you ask it to look someone up (<code>thurin status --no-proofs</code> asks only the Ethereum node), and if you set your own Neynar API key, Farcaster proofs go to Neynar's hub instead. It never checks for updates and reports nothing. <code>--show-network</code> lists every host a command contacted, and saves nothing.</li>
       <li><strong>Links</strong> on identity pages to Etherscan, the ENS app, and EFP contact nothing until you click them.</li>
-      <li><strong>Your wallet.</strong> If you connect a mobile wallet by QR code, the pairing goes through WalletConnect's relay. Nothing is sent to WalletConnect until you choose to connect.</li>
+      <li><strong>Your wallet.</strong> If you connect a mobile wallet by QR code, the pairing goes through WalletConnect's relay. Nothing is sent to WalletConnect until you choose to connect, or, after a QR-code connection, when the page reconnects it.</li>
     </ul>
     <p>We use no third-party analytics, advertising, or tracking services, and no data is shared with anyone for marketing.</p>
 
@@ -449,7 +470,7 @@
     <h2>Your Choices and Rights</h2>
     <ul>
       <li><strong>What is public is your choice.</strong> You decide which names, which email (if any), and which proofs go on-chain, and the page shows you before you publish.</li>
-      <li><strong>Revocation.</strong> You can revoke a claim at any time from thurin.id/attest. Revoked claims are marked inactive and are no longer treated as your identity; the record of them remains on the blockchain.</li>
+      <li><strong>Revocation.</strong> You can revoke a claim at any time from thurin.id/attest, with <code>thurin revoke</code>, or through a signed permission. Revoked claims are marked inactive and are no longer treated as your identity; the record of them remains on the blockchain.</li>
       <li><strong>Updating.</strong> You can replace the key stored on a claim, for example to remove a proof, without a new claim. The old key stays readable in the blockchain's history.</li>
       <li><strong>Deletion.</strong> Blockchain data cannot be deleted by us or by anyone, including an old key you replaced and a record you cleared. This is a property of public blockchains, and it is why the attest page asks you to choose carefully.</li>
       <li><strong>Access.</strong> Everything Thurin.id knows about an identity is on the identity page, readable by anyone, including you. There is nothing further to request.</li>
@@ -464,7 +485,7 @@
     </ul>
 
     <h2>Children's Privacy</h2>
-    <p>Thurin.id is not directed at children. Publishing a claim requires an Ethereum wallet and a transaction fee.</p>
+    <p>Thurin.id is not directed at children. Publishing a claim requires an Ethereum wallet.</p>
 
     <h2>Changes to This Policy</h2>
     <p>We update this page when the products change. Changes are posted here with a new date.</p>
@@ -476,9 +497,11 @@
     </ul>
 
     <h2>Legal Basis (GDPR)</h2>
-    <p>For users in the European Economic Area: the only processing carried out by Thurin Labs systems is the error and service logging described above, which records no IP address except on a failed web request, on the basis of our legitimate interest in operating the sites. Everything else, including every claim and proof, is published by you, from your own wallet, to a public blockchain, by your own choice, and is processed on your device. Thurin Labs is not the controller of data you choose to publish on a public blockchain.</p>
+    <p>For users in the European Economic Area: the only processing carried out by Thurin Labs systems is the error and service logging described above, which records no IP address except on a failed web request, on the basis of our legitimate interest in operating the sites. Everything else, including every claim and proof, is published by you, from your own wallet or through a permission you signed, to a public blockchain, by your own choice, and is processed on your device. Thurin Labs is not the controller of data you choose to publish on a public blockchain.</p>
 
     <p><em>We do not collect your data because the design never needs it. What you publish is yours, public, and permanent, and the page tells you so before you do.</em></p>
+
+    <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
   </main>
 
   <footer class="footer">
