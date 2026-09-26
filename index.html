@@ -51,6 +51,7 @@
       --color-btn-primary-text: #1a1a12;
       --color-vignette-a:      rgba(124, 154, 62, 0.03);
       --color-vignette-b:      rgba(201, 162, 39, 0.02);
+      --color-tengwar:         var(--color-secondary);
     }
 
     :root[data-theme="light"] {
@@ -68,6 +69,7 @@
       --color-btn-primary-text: #faf9f5;
       --color-vignette-a:      rgba(124, 154, 62, 0.03);
       --color-vignette-b:      rgba(168, 134, 30, 0.02);
+      --color-tengwar:         var(--color-primary);
     }
 
     /* ── Reset ── */
@@ -579,7 +581,7 @@
 
     .footer-bottom { flex-direction: column; align-items: center; gap: 0.9rem; text-align: center; }
     .footer-definition { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; line-height: 1.6; }
-    .footer-tengwar { height: 2.2em; width: auto; color: var(--color-text); }
+    .footer-tengwar { height: 2.2em; width: auto; color: var(--color-tengwar); }
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
